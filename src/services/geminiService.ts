@@ -30,12 +30,15 @@ export async function describeLyrics(lyrics: string, model: string = "gemini-3-f
   }
 }
 
-export async function generateNewLyrics(originalLyrics: string, analysis: string, songwriter: string, model: string = "gemini-3-flash-preview"): Promise<{ title: string; lyrics: string }> {
+export async function generateNewLyrics(originalLyrics: string, analysis: string, songwriter: string, model: string = "gemini-3-flash-preview", duration: string = "5mnt"): Promise<{ title: string; lyrics: string }> {
   if (!originalLyrics.trim()) {
     throw new Error("Lirik asli tidak ditemukan.");
   }
 
   const prompt = `Berdasarkan lirik asli dan analisis berikut, buatlah sebuah JUDUL dan lirik lagu BARU dengan gaya penulisan khas dari pencipta lagu Indonesia: ${songwriter}.
+
+  Target Durasi Lagu: ${duration}.
+  PENTING: Aturlah panjang lirik agar pas dengan durasi ${duration} tersebut. Jika durasi cukup panjang (seperti 8-10 menit), Anda BOLEH menambahkan pengulangan Reff/Chorus (misal: [Chorus 2x]), menambahkan Bridge yang lebih panjang, atau menambahkan bagian [Interlude/Solo Instrument Representation] jika dirasa perlu untuk menambah estetika aliran lagu.
 
   Karakteristik Judul:
   1. Bahasa yang mudah dihafal dan lugas.
@@ -47,7 +50,7 @@ export async function generateNewLyrics(originalLyrics: string, analysis: string
   2. Pastikan penataan bahasa "enak dinyanyikan" (singable), memiliki aliran yang pas dengan nafas penyanyi, dan rima yang tidak dipaksakan namun harmonis.
   3. Perhatikan struktur lagu khas mereka (seperti penempatan Chorus yang kuat atau Bridge yang emosional).
   4. Nuansa, nada kata, dan emosional harus identik dengan lirik aslinya namun dibalut dalam "jiwa" ${songwriter}.
-  5. Struktur lirik lengkap: [Verse], [Pre-Chorus], [Chorus], [Bridge], [Outro].
+  5. Struktur lirik lengkap sesuai durasi: [Verse], [Pre-Chorus], [Chorus], [Bridge], [Outro].
 
   Panduan Khusus Tokoh:
   - Jika Youngky RM/Cecep AS/Deddy Dores: Gaya Pop-Rock/Slow-Rock melankolis era 80/90-an yang dramatis.

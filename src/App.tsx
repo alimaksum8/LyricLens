@@ -14,6 +14,8 @@ const MODELS = [
   { id: 'gemini-3.1-flash-lite-preview', label: 'Gemini 3.1 Flash' }
 ];
 
+const DURATIONS = ["5mnt", "6mnt", "7mnt", "8mnt", "9mnt", "10mnt"];
+
 export default function App() {
   const [lyrics, setLyrics] = useState('');
   const [result, setResult] = useState('');
@@ -25,6 +27,7 @@ export default function App() {
   const [view, setView] = useState<'analysis' | 'new-lyrics'>('analysis');
   const [selectedSongwriter, setSelectedSongwriter] = useState(SONGWRITERS[0]);
   const [selectedModel, setSelectedModel] = useState(MODELS[0].id);
+  const [selectedDuration, setSelectedDuration] = useState(DURATIONS[0]);
   const [copiedTitle, setCopiedTitle] = useState(false);
   const [copiedLyrics, setCopiedLyrics] = useState(false);
 
@@ -58,7 +61,13 @@ export default function App() {
     setError('');
     
     try {
-      const { title, lyrics: generatedLyrics } = await generateNewLyrics(lyrics, result, selectedSongwriter, selectedModel);
+      const { title, lyrics: generatedLyrics } = await generateNewLyrics(
+        lyrics, 
+        result, 
+        selectedSongwriter, 
+        selectedModel,
+        selectedDuration
+      );
       setNewTitle(title);
       setNewLyrics(generatedLyrics);
       setView('new-lyrics');
@@ -274,6 +283,30 @@ export default function App() {
                       <PenTool className="w-4 h-4 group-hover:scale-110 transition-transform" />
                       Jadikan Lirik Baru (Gaya {selectedSongwriter})
                     </motion.button>
+
+                    <div className="mt-4 flex flex-col gap-2">
+                      <label className="text-[10px] font-semibold text-white/30 uppercase tracking-widest px-1">
+                        Target Durasi Lagu:
+                      </label>
+                      <div className="relative">
+                        <select
+                          value={selectedDuration}
+                          onChange={(e) => setSelectedDuration(e.target.value)}
+                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#ff4e00]/50 transition-all appearance-none cursor-pointer"
+                        >
+                          {DURATIONS.map((d) => (
+                            <option key={d} value={d} className="bg-[#0a0a0b]">
+                              {d}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-white/20">
+                          <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                            <path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
                   </motion.div>
                 ) : view === 'new-lyrics' && newLyrics ? (
                   <motion.div
