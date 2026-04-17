@@ -16,11 +16,39 @@ const MODELS = [
 
 const DURATIONS = ["5mnt", "6mnt", "7mnt", "8mnt", "9mnt", "10mnt"];
 
+const GENRES = ["Slowrock", "Poprock", "Pop", "Rock"];
+
+const VOCALS = ["Male", "Female", "Bernafas", "Sedih", "Vocals Slowrock", "Vocals Pop"];
+
+const TEMPOS = [
+  "40-60 BPM",
+  "60-80 BPM",
+  "80-100 BPM",
+  "100-120 BPM",
+  "120-140 BPM",
+  "Cepat (140+ BPM)",
+  "Sangat Cepat (180+ BPM)"
+];
+
+const INTRO_OPENINGS = [
+  "Gitar Distorsi",
+  "Gitar Elektrik",
+  "Perkusi Akustik",
+  "Solo Gitar Sustain",
+  "Solo Gitar Bending",
+  "Solo Gitar Vibrato",
+  "Solo Nada Tinggi / Gitar Menjerit",
+  "Solo Gitar Lead",
+  "Tematik Main Theme Preview",
+  "Tematik Chorus Preview"
+];
+
 export default function App() {
   const [lyrics, setLyrics] = useState('');
   const [result, setResult] = useState('');
   const [newLyrics, setNewLyrics] = useState('');
   const [newTitle, setNewTitle] = useState('');
+  const [musicStyle, setMusicStyle] = useState('');
   const [loading, setLoading] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState('');
@@ -28,8 +56,21 @@ export default function App() {
   const [selectedSongwriter, setSelectedSongwriter] = useState(SONGWRITERS[0]);
   const [selectedModel, setSelectedModel] = useState(MODELS[0].id);
   const [selectedDuration, setSelectedDuration] = useState(DURATIONS[0]);
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([GENRES[0]]);
+  const [selectedVocals, setSelectedVocals] = useState<string[]>([VOCALS[0]]);
+  const [selectedTempos, setSelectedTempos] = useState<string[]>([TEMPOS[2]]);
+  const [selectedIntros, setSelectedIntros] = useState<string[]>([]);
   const [copiedTitle, setCopiedTitle] = useState(false);
   const [copiedLyrics, setCopiedLyrics] = useState(false);
+  const [copiedStyle, setCopiedStyle] = useState(false);
+
+  const toggleSelection = (list: string[], setList: (l: string[]) => void, item: string) => {
+    if (list.includes(item)) {
+      setList(list.filter(i => i !== item));
+    } else {
+      setList([...list, item]);
+    }
+  };
 
   const handleDescribe = async () => {
     if (!lyrics.trim()) {
@@ -42,6 +83,7 @@ export default function App() {
     setResult('');
     setNewLyrics('');
     setNewTitle('');
+    setMusicStyle('');
     setView('analysis');
 
     try {
@@ -61,15 +103,20 @@ export default function App() {
     setError('');
     
     try {
-      const { title, lyrics: generatedLyrics } = await generateNewLyrics(
+      const { title, lyrics: generatedLyrics, musicStyle: style } = await generateNewLyrics(
         lyrics, 
         result, 
         selectedSongwriter, 
         selectedModel,
-        selectedDuration
+        selectedDuration,
+        selectedGenres.join(', '),
+        selectedVocals.join(', '),
+        selectedTempos.join(', '),
+        selectedIntros.join(', ')
       );
       setNewTitle(title);
       setNewLyrics(generatedLyrics);
+      setMusicStyle(style);
       setView('new-lyrics');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Gagal membuat lirik baru.');
@@ -100,11 +147,23 @@ export default function App() {
     }
   };
 
+  const handleCopyStyle = async () => {
+    if (!musicStyle) return;
+    try {
+      await navigator.clipboard.writeText(musicStyle);
+      setCopiedStyle(true);
+      setTimeout(() => setCopiedStyle(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy style: ', err);
+    }
+  };
+
   const clearAll = () => {
     setLyrics('');
     setResult('');
     setNewLyrics('');
     setNewTitle('');
+    setMusicStyle('');
     setError('');
     setView('analysis');
   };
@@ -132,7 +191,7 @@ export default function App() {
           </h1>
           <p className="text-white/60 text-lg mb-6">Ungkap makna tersembunyi dan ciptakan karya baru.</p>
           
-          <div className="flex items-center justify-center gap-3 mb-8">
+          <div className="flex items-center justify-center gap-3">
             {MODELS.map((model) => (
               <button
                 key={model.id}
@@ -253,24 +312,112 @@ export default function App() {
                       ))}
                     </div>
                     
-                    <div className="mt-8 space-y-4">
-                      <h3 className="text-xs font-semibold uppercase tracking-widest text-white/30">
-                        Pilih Gaya Pencipta Lagu:
-                      </h3>
-                      <div className="grid grid-cols-3 gap-2">
-                        {SONGWRITERS.map((name) => (
-                          <button
-                            key={name}
-                            onClick={() => setSelectedSongwriter(name)}
-                            className={`py-2 px-1 text-[10px] md:text-xs rounded-xl border transition-all ${
-                              selectedSongwriter === name 
-                                ? 'bg-[#ff4e00]/20 border-[#ff4e00] text-white' 
-                                : 'bg-white/5 border-white/10 text-white/40 hover:bg-white/10'
-                            }`}
-                          >
-                            {name}
-                          </button>
-                        ))}
+                    <div className="mt-8 space-y-6 pt-6 border-t border-white/10">
+                      <div className="space-y-4">
+                        <h3 className="text-xs font-semibold uppercase tracking-widest text-white/30">
+                          Pilih Gaya Pencipta Lagu:
+                        </h3>
+                        <div className="grid grid-cols-3 gap-2">
+                          {SONGWRITERS.map((name) => (
+                            <button
+                              key={name}
+                              onClick={() => setSelectedSongwriter(name)}
+                              className={`py-2 px-1 text-[10px] md:text-xs rounded-xl border transition-all ${
+                                selectedSongwriter === name 
+                                  ? 'bg-[#ff4e00]/20 border-[#ff4e00] text-white' 
+                                  : 'bg-white/5 border-white/10 text-white/40 hover:bg-white/10'
+                              }`}
+                            >
+                              {name}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="space-y-4 pt-4 border-t border-white/5">
+                        <h3 className="text-xs font-semibold uppercase tracking-widest text-white/30">Pengaturan Musik:</h3>
+                        
+                        <div className="space-y-4">
+                          {/* Genre Select */}
+                          <div className="flex flex-col gap-2">
+                            <span className="text-[10px] text-white/20 uppercase tracking-tighter">Genre:</span>
+                            <div className="flex flex-wrap gap-2">
+                              {GENRES.map((genre) => (
+                                <button
+                                  key={genre}
+                                  onClick={() => toggleSelection(selectedGenres, setSelectedGenres, genre)}
+                                  className={`px-3 py-1.5 rounded-lg text-xs transition-all border ${
+                                    selectedGenres.includes(genre)
+                                      ? 'bg-[#ff4e00]/15 border-[#ff4e00] text-white'
+                                      : 'bg-white/5 border-white/10 text-white/40'
+                                  }`}
+                                >
+                                  {genre}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Intro Select */}
+                          <div className="flex flex-col gap-2">
+                            <span className="text-[10px] text-white/20 uppercase tracking-tighter">Intro Opening:</span>
+                            <div className="flex flex-wrap gap-2">
+                              {INTRO_OPENINGS.map((intro) => (
+                                <button
+                                  key={intro}
+                                  onClick={() => toggleSelection(selectedIntros, setSelectedIntros, intro)}
+                                  className={`px-2 py-1 rounded-lg text-xs transition-all border ${
+                                    selectedIntros.includes(intro)
+                                      ? 'bg-[#ff4e00]/15 border-[#ff4e00] text-white'
+                                      : 'bg-white/5 border-white/10 text-white/40'
+                                  }`}
+                                >
+                                  {intro}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Vocals Select */}
+                          <div className="flex flex-col gap-2">
+                            <span className="text-[10px] text-white/20 uppercase tracking-tighter">Vocals:</span>
+                            <div className="flex flex-wrap gap-2">
+                              {VOCALS.map((vocal) => (
+                                <button
+                                  key={vocal}
+                                  onClick={() => toggleSelection(selectedVocals, setSelectedVocals, vocal)}
+                                  className={`px-3 py-1.5 rounded-lg text-xs transition-all border ${
+                                    selectedVocals.includes(vocal)
+                                      ? 'bg-[#ff4e00]/15 border-[#ff4e00] text-white'
+                                      : 'bg-white/5 border-white/10 text-white/40'
+                                  }`}
+                                >
+                                  {vocal}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Tempo Select */}
+                          <div className="flex flex-col gap-2">
+                            <span className="text-[10px] text-white/20 uppercase tracking-tighter">Tempo:</span>
+                            <div className="flex flex-wrap gap-2">
+                              {TEMPOS.map((tempo) => (
+                                <button
+                                  key={tempo}
+                                  onClick={() => toggleSelection(selectedTempos, setSelectedTempos, tempo)}
+                                  className={`px-3 py-1.5 rounded-lg text-xs transition-all border ${
+                                    selectedTempos.includes(tempo)
+                                      ? 'bg-[#ff4e00]/15 border-[#ff4e00] text-white'
+                                      : 'bg-white/5 border-white/10 text-white/40'
+                                  }`}
+                                >
+                                  {tempo}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     
@@ -278,13 +425,16 @@ export default function App() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       onClick={handleGenerateNew}
-                      className="mt-6 py-3 px-4 rounded-2xl bg-[#ff4e00] hover:bg-[#ff6a26] text-white transition-all flex items-center justify-center gap-2 group shadow-lg shadow-[#ff4e00]/20"
+                      className="mt-8 py-4 px-4 rounded-2xl bg-[#ff4e00] hover:bg-[#ff6a26] text-white transition-all flex flex-col items-center justify-center gap-1 group shadow-lg shadow-[#ff4e00]/20"
                     >
-                      <PenTool className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                      Jadikan Lirik Baru (Gaya {selectedSongwriter})
+                      <div className="flex items-center gap-2">
+                        <PenTool className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                        <span className="font-bold">Jadikan Lirik Baru</span>
+                      </div>
+                      <span className="text-[10px] opacity-70">Gaya {selectedSongwriter} • {selectedGenres.join('/')} • {selectedDuration}</span>
                     </motion.button>
 
-                    <div className="mt-4 flex flex-col gap-2">
+                    <div className="mt-6 flex flex-col gap-2 pt-4 border-t border-white/5">
                       <label className="text-[10px] font-semibold text-white/30 uppercase tracking-widest px-1">
                         Target Durasi Lagu:
                       </label>
@@ -352,14 +502,48 @@ export default function App() {
                     <div className="space-y-6 pt-12 flex-1">
                       {/* Title Column */}
                       <div className="p-4 rounded-2xl bg-[#ff4e00]/10 border border-[#ff4e00]/20">
-                        <h3 className="text-xs font-semibold uppercase tracking-widest text-[#ff4e00] mb-1">Judul Lagu</h3>
+                        <div className="flex items-center justify-between mb-2">
+                          <h3 className="text-xs font-semibold uppercase tracking-widest text-[#ff4e00]">Judul Lagu Baru</h3>
+                          <span className="text-[10px] text-[#ff4e00]/60 italic">Gaya {selectedSongwriter} • {selectedGenres.join('/')}</span>
+                        </div>
                         <p className="text-2xl font-bold tracking-tight text-white">{newTitle}</p>
                       </div>
 
+                      {/* Settings Summary */}
+                      <div className="flex flex-wrap gap-2 text-[10px] text-white/40 border-b border-white/5 pb-4">
+                        <span className="bg-white/5 px-2 py-0.5 rounded">Duration: {selectedDuration}</span>
+                        <span className="bg-white/5 px-2 py-0.5 rounded">Vocals: {selectedVocals.join(', ')}</span>
+                        <span className="bg-white/5 px-2 py-0.5 rounded">Tempo: {selectedTempos.join(', ')}</span>
+                        {selectedIntros.length > 0 && (
+                          <span className="bg-white/5 px-2 py-0.5 rounded">Intro: {selectedIntros.join(', ')}</span>
+                        )}
+                      </div>
+
                       {/* Lyrics Column */}
-                      <div className="space-y-4 font-serif leading-relaxed text-lg text-white/90 whitespace-pre-wrap pb-8">
+                      <div className="space-y-4 font-serif leading-relaxed text-lg text-white/90 whitespace-pre-wrap">
                         {newLyrics}
                       </div>
+
+                      {/* Music Style Column */}
+                      {musicStyle && (
+                        <div className="mt-10 p-5 rounded-2xl bg-white/5 border border-white/10 relative group/style">
+                          <div className="flex items-center justify-between mb-3">
+                            <h3 className="text-xs font-semibold uppercase tracking-widest text-white/40 flex items-center gap-2">
+                              <Music className="w-3 h-3" /> Style Musik
+                            </h3>
+                            <button
+                              onClick={handleCopyStyle}
+                              className="p-1.5 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 text-white/40 hover:text-white transition-all"
+                              title="Salin Style Musik"
+                            >
+                              {copiedStyle ? <Check className="w-3 h-3 text-green-400" /> : <Copy className="w-3 h-3" />}
+                            </button>
+                          </div>
+                          <p className="text-sm leading-relaxed text-white/70 italic">
+                            {musicStyle}
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </motion.div>
                 ) : (

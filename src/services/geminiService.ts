@@ -30,15 +30,42 @@ export async function describeLyrics(lyrics: string, model: string = "gemini-3-f
   }
 }
 
-export async function generateNewLyrics(originalLyrics: string, analysis: string, songwriter: string, model: string = "gemini-3-flash-preview", duration: string = "5mnt"): Promise<{ title: string; lyrics: string }> {
+export async function generateNewLyrics(
+  originalLyrics: string, 
+  analysis: string, 
+  songwriter: string, 
+  model: string = "gemini-3-flash-preview", 
+  duration: string = "5mnt", 
+  genre: string = "Slowrock",
+  vocal: string = "Male",
+  tempo: string = "80-100 BPM",
+  introOpening: string = ""
+): Promise<{ title: string; lyrics: string; musicStyle: string }> {
   if (!originalLyrics.trim()) {
     throw new Error("Lirik asli tidak ditemukan.");
   }
 
-  const prompt = `Berdasarkan lirik asli dan analisis berikut, buatlah sebuah JUDUL dan lirik lagu BARU dengan gaya penulisan khas dari pencipta lagu Indonesia: ${songwriter}.
+  const prompt = `Berdasarkan lirik asli dan analisis berikut, buatlah sebuah JUDUL, lirik lagu BARU, dan DESKRIPSI STYLE MUSIK dengan gaya penulisan khas dari pencipta lagu Indonesia: ${songwriter}, dengan karakteristik musik sebagai berikut:
+  - Genre: ${genre}
+  - Karakter Vokal: ${vocal}
+  - Tempo: ${tempo}
+  - Intro/Opening: ${introOpening || "Standar sesuai genre"}
 
   Target Durasi Lagu: ${duration}.
   PENTING: Aturlah panjang lirik agar pas dengan durasi ${duration} tersebut. Jika durasi cukup panjang (seperti 8-10 menit), Anda BOLEH menambahkan pengulangan Reff/Chorus (misal: [Chorus 2x]), menambahkan Bridge yang lebih panjang, atau menambahkan bagian [Interlude/Solo Instrument Representation] jika dirasa perlu untuk menambah estetika aliran lagu.
+
+  Karakteristik Aliran Musik (Genre: ${genre}, Vokal: ${vocal}, Tempo: ${tempo}, Intro: ${introOpening}):
+  - Pastikan diksi dan pemilihan kata mendukung nuansa ${genre}.
+  - Sesuaikan gaya penulisan agar cocok dengan karakter vokal ${vocal} (misal: jika 'Bernafas' atau 'Sedih' dipilih, gunakan kalimat yang lebih emosional dan memberi ruang jeda nafas).
+  - Tempo ${tempo} harus mempengaruhi ritme kata; tempo lambat membutuhkan kata-kata yang lebih panjang/dalam, sementara tempo cepat membutuhkan rima yang lebih dinamis.
+  - Jika ada pilihan Intro/Opening (${introOpening}), sertakan deskripsi awal dalam musik style atau arahkan penulisan lirik pembuka untuk menyesuaikan dengan ambience tersebut.
+
+  Deskripsi Style Musik:
+  - Berikan panduan aransemen musik yang detail meliputi instrumen utama, mood, dan cara membawakan lagu ini agar sesuai dengan jiwa ${songwriter} dan parameter yang dipilih (${genre}, ${vocal}, ${tempo}, ${introOpening}).
+  - PENTING: Jika vokal '${vocal}' mengandung kata 'Male' atau 'Female', Anda WAJIB mencantumkan identitas vokal tersebut secara eksplisit di awal deskripsi (misal: "Lagu ini dibawakan oleh Female Vocal dengan karakter...") agar mesin musik AI (seperti Suno/Udio) tidak salah mengenali gender penyanyi.
+  - Sertakan bagaimana bagian Intro (${introOpening}) dimainkan secara detail.
+  - PENTING: Jangan gunakan awalan kalimat seperti "Aransemen khas ${songwriter}:" atau "Gaya musik ${songwriter}:". Langsung saja jelaskan karakteristik musik dan kekhasan gaya penulisan ${songwriter} secara naratif dan menyatu.
+  - PENTING: Maksimal 980 karakter.
 
   Karakteristik Judul:
   1. Bahasa yang mudah dihafal dan lugas.
@@ -49,7 +76,7 @@ export async function generateNewLyrics(originalLyrics: string, analysis: string
   1. Gunakan ciri khas bahasa, diksi, dan penataan kalimat yang sangat spesifik dari ${songwriter}.
   2. Pastikan penataan bahasa "enak dinyanyikan" (singable), memiliki aliran yang pas dengan nafas penyanyi, dan rima yang tidak dipaksakan namun harmonis.
   3. Perhatikan struktur lagu khas mereka (seperti penempatan Chorus yang kuat atau Bridge yang emosional).
-  4. Nuansa, nada kata, dan emosional harus identik dengan lirik aslinya namun dibalut dalam "jiwa" ${songwriter}.
+  4. Nuansa, nada kata, dan emosional harus identik dengan lirik aslinya namun dibalut dalam "jiwa" ${songwriter}, genre ${genre}, vokal ${vocal}, dan tempo ${tempo}.
   5. Struktur lirik HARUS mengikuti pola dan struktur yang identik dengan lirik asli (jumlah bait, urutan verse/chorus), namun diatur kepadatannya atau ditambahkan detail puitis agar pas dengan target durasi: ${duration}.
 
   Panduan Khusus Tokoh:
@@ -67,12 +94,13 @@ export async function generateNewLyrics(originalLyrics: string, analysis: string
   PENTING: Kembalikan jawaban dalam format JSON mentah (tanpa markdown block) dengan struktur:
   {
     "title": "Judul Lagu Disini",
-    "lyrics": "Lirik Lagu Lengkap Dengan Struktur Disini"
+    "lyrics": "Lirik Lagu Lengkap Dengan Struktur Disini",
+    "musicStyle": "Deskripsi Style Musik Disini (Maks 980 Karakter)"
   }`;
 
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: model,
       contents: prompt,
       config: {
         responseMimeType: "application/json"
@@ -80,7 +108,7 @@ export async function generateNewLyrics(originalLyrics: string, analysis: string
     });
 
     const result = JSON.parse(response.text || "{}");
-    if (!result.title || !result.lyrics) {
+    if (!result.title || !result.lyrics || !result.musicStyle) {
       throw new Error("Format respons AI tidak valid.");
     }
     return result;
