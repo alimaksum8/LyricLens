@@ -62,9 +62,10 @@ export async function generateNewLyrics(
 
   Deskripsi Style Musik:
   - Berikan panduan aransemen musik yang detail meliputi instrumen utama, mood, dan cara membawakan lagu ini agar sesuai dengan jiwa ${songwriter} dan parameter yang dipilih (${genre}, ${vocal}, ${tempo}, ${introOpening}).
-  - PENTING: Jika vokal '${vocal}' mengandung kata 'Male' atau 'Female', Anda WAJIB mencantumkan identitas vokal tersebut secara eksplisit di awal deskripsi (misal: "Lagu ini dibawakan oleh Female Vocal dengan karakter...") agar mesin musik AI (seperti Suno/Udio) tidak salah mengenali gender penyanyi.
+  - PENTING: JANGAN PERNAH menyebutkan nama tokoh/pencipta lagu (${songwriter}), nama artis, atau nama band manapun di dalam deskripsi ini. Gunakan hanya deskripsi teknis musik, instrumen, dan suasana (mood) saja. Hal ini penting agar deskripsi tidak diblokir oleh sistem AI musik eksternal (seperti Suno/Udio).
+  - PENTING: Jika vokal '${vocal}' mengandung kata 'Male' atau 'Female', wajib mencantumkan identitas vokal tersebut (Male Vocal/Female Vocal) secara menyatu dalam narasi di baris pertama deskripsi. JANGAN gunakan kalimat pembuka kaku seperti "Lagu ini dibawakan oleh...". Gunakan gaya bahasa yang lebih puitis atau deskriptif langsung, contoh: "Suara seorang Female Vocal dengan karakter..." atau "Hadir dengan vokal Male yang..." agar mesin musik AI (seperti Suno/Udio) tetap bisa mengenali gender penyanyi dengan benar.
   - Sertakan bagaimana bagian Intro (${introOpening}) dimainkan secara detail.
-  - PENTING: Jangan gunakan awalan kalimat seperti "Aransemen khas ${songwriter}:" atau "Gaya musik ${songwriter}:". Langsung saja jelaskan karakteristik musik dan kekhasan gaya penulisan ${songwriter} secara naratif dan menyatu.
+  - PENTING: Jangan gunakan awalan kalimat seperti "Aransemen khas..." atau "Gaya musik...". Langsung saja jelaskan karakteristik musik secara naratif dan menyatu tanpa menyebut nama tokoh.
   - PENTING: Maksimal 980 karakter.
 
   Karakteristik Judul:
