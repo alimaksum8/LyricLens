@@ -110,8 +110,10 @@ export default function App() {
     setError('');
     
     try {
+      // Use rewritten lyrics if available as the source for generation
+      const sourceLyrics = (avoidCopyright && result) ? result : lyrics;
       const { title, lyrics: generatedLyrics, musicStyle: style } = await generateNewLyrics(
-        lyrics, 
+        sourceLyrics, 
         result || lyrics, 
         selectedSongwriter, 
         selectedModel,
