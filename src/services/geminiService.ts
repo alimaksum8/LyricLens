@@ -103,7 +103,11 @@ ${avoidCopyright ? `  1. ANALISIS JUMLAH KATA PER BARIS:
   - Jika Youngky RM/Cecep AS/Deddy Dores: Dramatis, melankolis, chord progresif yang megah, lirik tentang keputusasaan atau pengorbanan cinta yang dalam. Pop-Rock/Slow-Rock era 80/90-an.
   - Jika Pance Pondaag: Sederhana, manis, sangat puitis namun mudah dimengerti, lirik tentang rindu dan kasih sayang yang tulus. Pop nostalgia.
   - Jika Saari Amri: Cengkok melayu yang kental dalam rima lirik, metafora tentang alam/hujan untuk menggambarkan kesedihan, diksi yang sangat emosional dan menusuk hati.
-  - Jika Teddy Riady: Lirik yang lebih dewasa, lugas namun berkelas, aransemen yang rapi dan elegan dengan sentuhan rock romantis.
+  - Jika Teddy Riady: Lirik yang lebih dewasa, lugas namun berkelas, aransemen yang rapi and elegan dengan sentuhan rock romantis.
+
+  Panduan Khusus Genre:
+  - Jika Remix Vibe slow Tiktok: Buat aransemen remik yang atmosferik, lambat, dreamy, dengan reverb luas. Gunakan beat yang santai namun tetap memiliki groove modern (seperti sped-up/pitched-down style). Cocok untuk video sinematik atau konten transisi.
+  - Jika Remix Vibe Sound Horeg atau DJ Horeg Viral: Buat aransemen dengan BASS yang SANGAT DOMINAN, powerfull, menggelegar layaknya sound system parade. Tekankan pada kick drum yang solid, sub-bass yang deep, breakbeat khas lokal, dan energi tinggi yang mampu menggetarkan setiap sudut ruangan.
 
   Lirik Asli:
   ${originalLyrics}

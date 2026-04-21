@@ -16,7 +16,7 @@ const MODELS = [
 
 const DURATIONS = ["5mnt", "6mnt", "7mnt", "8mnt", "9mnt", "10mnt"];
 
-const GENRES = ["Slowrock", "Poprock", "Pop", "Rock", "Pop Akustik", "Rock Akustik", "Orchestra"];
+const GENRES = ["Slowrock", "Poprock", "Pop", "Rock", "Pop Akustik", "Rock Akustik", "Orchestra", "Remix Vibe slow Tiktok", "Remix Vibe Sound Horeg", "DJ Horeg Viral"];
 
 const VOCALS = ["Male", "Female", "Bernafas", "Sedih", "Vocals Slowrock", "Vocals Pop"];
 
