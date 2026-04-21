@@ -39,7 +39,8 @@ export async function generateNewLyrics(
   genre: string = "Slowrock",
   vocal: string = "Male",
   tempo: string = "80-100 BPM",
-  introOpening: string = ""
+  introOpening: string = "",
+  avoidCopyright: boolean = false
 ): Promise<{ title: string; lyrics: string; musicStyle: string }> {
   if (!originalLyrics.trim()) {
     throw new Error("Lirik asli tidak ditemukan.");
@@ -53,6 +54,13 @@ export async function generateNewLyrics(
 
   Target Durasi Lagu: ${duration}.
   PENTING: Aturlah panjang lirik agar pas dengan durasi ${duration} tersebut. Jika durasi cukup panjang (seperti 8-10 menit), Anda BOLEH menambahkan pengulangan Reff/Chorus (misal: [Chorus 2x]), menambahkan Bridge yang lebih panjang, atau menambahkan bagian [Interlude/Solo Instrument Representation] jika dirasa perlu untuk menambah estetika aliran lagu.
+
+  ${avoidCopyright ? `PENTING (Mode Hindari Hak Cipta AKTIF): 
+  - Anda HARUS merombak lirik asli untuk menghindari hak cipta secara hukum.
+  - ANALISIS PER BARIS: Temukan tepat 1 kata saja dalam setiap baris yang memiliki potensi hak cipta paling kuat (kata yang paling ikonik).
+  - GANTI HANYA 1 KATA TERSEBUT: Ubah hanya kata kunci tersebut dengan PERSAMAAN KATA (Sinonim) yang maknanya paling mendekati (contoh: 'cari' menjadi 'telusuri', 'terlalu' menjadi 'begitu', 'cinta' menjadi 'kasih').
+  - PERTAHANKAN YANG LAIN: Pertahankan semua kata lain dalam baris tersebut agar lirik tetap terasa familiar.
+  - PERTAHANKAN JUMLAH KATA PER BARIS: Jumlah kata pada setiap baris hasil rombakan HARUS SAMA PERSIS dengan aslinya.` : ""}
 
   Karakteristik Aliran Musik (Genre: ${genre}, Vokal: ${vocal}, Tempo: ${tempo}, Intro: ${introOpening}):
   - Pastikan diksi dan pemilihan kata mendukung nuansa ${genre}.
@@ -74,12 +82,11 @@ export async function generateNewLyrics(
   3. Terasa global dan bisa diterima oleh semua kalangan (anak-anak, muda-mudi, dewasa, rakyat kecil, elit politik, hingga akademis).
 
   Karakteristik Lirik:
-  1. Gunakan ciri khas bahasa, diksi, dan penataan kalimat yang sangat spesifik dari ${songwriter}.
-  2. Pastikan penataan bahasa "enak dinyanyikan" (singable), memiliki aliran yang pas dengan nafas penyanyi, dan rima yang tidak dipaksakan namun harmonis.
-  3. Perhatikan struktur lagu khas mereka (seperti penempatan Chorus yang kuat atau Bridge yang emosional).
-  4. Nuansa, nada kata, dan emosional harus identik dengan lirik aslinya namun dibalut dalam "jiwa" ${songwriter}, genre ${genre}, vokal ${vocal}, dan tempo ${tempo}.
-  5. PENTING: Lirik baru harus memiliki struktur yang SANGAT IDENTIK dengan lirik asli. Pertahankan jumlah baris, urutan bait, dan yang paling penting: PERTAHANKAN JUMLAH KATA PER BARIS (atau mendekati) agar ritme dan meter lagu tidak berubah drastis dari aslinya.
-  6. Jangan melakukan perubahan radikal pada struktur kalimat; lakukan interpretasi artistik (parafrase) yang mendekati pilihan kata lirik asli namun dengan sentuhan gaya ${songwriter}.
+  1. Gunakan ciri khas bahasa, diksi, dan penataan kalimat yang SANGAT MINIMAL agar tidak jauh dari lirik aslinya namun tetap memiliki "rasa" ${songwriter}.
+  2. Pertahankan kata-kata asli sebanyak mungkin. Hanya lakukan parafrase jika benar-benar diperlukan untuk menyesuaikan genre ${genre}.
+  3. PENTING: Lirik baru harus memiliki jumlah baris dan struktur bait yang SAMA PERSIS dengan lirik asli.
+  4. PERTAHANKAN JUMLAH KATA PER BARIS: Jumlah kata pada setiap baris harus diupayakan identik dengan aslinya agar ritme lagu tidak berubah.
+  5. Jangan melakukan perubahan radikal pada makna atau urutan kata; interpretasi harus sangat mendekati lirik asli.
 
   Panduan Khusus Tokoh:
   - Jika Youngky RM/Cecep AS/Deddy Dores: Gaya Pop-Rock/Slow-Rock melankolis era 80/90-an yang dramatis.
@@ -117,5 +124,36 @@ export async function generateNewLyrics(
   } catch (error) {
     console.error("Error generating new lyrics:", error);
     throw new Error("Terjadi kesalahan saat membuat lirik baru.");
+  }
+}
+
+export async function rewriteToAvoidCopyright(lyrics: string, model: string = "gemini-3-flash-preview"): Promise<string> {
+  if (!lyrics.trim()) {
+    throw new Error("Lirik tidak boleh kosong.");
+  }
+
+  const prompt = `Tugas Anda adalah merombak lirik lagu berikut untuk MENGHINDARI HAK CIPTA (Copyright Avoidance) dengan cara SANGAT PRESISI.
+
+  Aturan Operasi:
+  1. ANALISIS PER BARIS: Periksa setiap baris lirik asli.
+  2. UBAH HANYA SATU KATA: Temukan tepat 1 kata kunci per baris yang paling berpotensi terkena hak cipta dan ganti dengan PERSAMAAN KATA (Sinonim) yang maknanya paling mendekati (contoh: 'cari' menjadi 'telusuri', 'terlalu' menjadi 'begitu', 'malam' menjadi 'kelam').
+  3. PERTAHANKAN KATA LAINNYA: Kata-kata lain dalam baris tersebut tidak boleh diubah sedikitpun.
+  4. PERTAHANKAN JUMLAH KATA PER BARIS: Jumlah kata pada setiap baris HARUS SAMA PERSIS dengan lirik aslinya.
+  5. PERTAHANKAN STRUKTUR: Jumlah bait dan baris tidak boleh berubah.
+  6. HASIL AKHIR: Berikan lirik hasil rombakan ini saja tanpa penjelasan apapun.
+
+  Lirik Asli:
+  ${lyrics}`;
+
+  try {
+    const response = await ai.models.generateContent({
+      model: model,
+      contents: prompt,
+    });
+
+    return response.text || "Gagal merombak lirik.";
+  } catch (error) {
+    console.error("Error rewriting lyrics:", error);
+    throw new Error("Terjadi kesalahan saat merombak lirik. Silakan coba lagi.");
   }
 }
