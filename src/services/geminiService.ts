@@ -78,7 +78,8 @@ export async function generateNewLyrics(
   2. Pastikan penataan bahasa "enak dinyanyikan" (singable), memiliki aliran yang pas dengan nafas penyanyi, dan rima yang tidak dipaksakan namun harmonis.
   3. Perhatikan struktur lagu khas mereka (seperti penempatan Chorus yang kuat atau Bridge yang emosional).
   4. Nuansa, nada kata, dan emosional harus identik dengan lirik aslinya namun dibalut dalam "jiwa" ${songwriter}, genre ${genre}, vokal ${vocal}, dan tempo ${tempo}.
-  5. Struktur lirik HARUS mengikuti pola dan struktur yang identik dengan lirik asli (jumlah bait, urutan verse/chorus), namun diatur kepadatannya atau ditambahkan detail puitis agar pas dengan target durasi: ${duration}.
+  5. PENTING: Lirik baru harus memiliki struktur yang SANGAT IDENTIK dengan lirik asli. Pertahankan jumlah baris, urutan bait, dan yang paling penting: PERTAHANKAN JUMLAH KATA PER BARIS (atau mendekati) agar ritme dan meter lagu tidak berubah drastis dari aslinya.
+  6. Jangan melakukan perubahan radikal pada struktur kalimat; lakukan interpretasi artistik (parafrase) yang mendekati pilihan kata lirik asli namun dengan sentuhan gaya ${songwriter}.
 
   Panduan Khusus Tokoh:
   - Jika Youngky RM/Cecep AS/Deddy Dores: Gaya Pop-Rock/Slow-Rock melankolis era 80/90-an yang dramatis.
