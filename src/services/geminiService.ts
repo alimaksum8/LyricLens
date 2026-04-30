@@ -60,16 +60,18 @@ export async function generateNewLyrics(
   - Jika genre adalah 'Rock' atau 'Slow Rock', pastikan ada deskripsi tentang 'Distorted Electric Guitar', 'Aggressive/Emotional Drums', dan 'Driving Bass'. 
   - KHUSUS Genre 'Slow Rock' (terutama gaya Malaysia/Indonesia 90-an): Wajib sertakan elemen 'Crying lead guitar solo' yang mendayu, 'Heavy keyboard/synth pads' untuk atmosfer megah, dan vokal yang memiliki 'high-pitched emotive delivery'.
   - Jika 'Pop', pastikan ada 'Piano', 'Synthesizer', atau 'Clean Guitar'.
-  - Sesuaikan gaya penulisan agar cocok dengan karakter vokal ${vocal}. Dekripsikan vokal secara teknis: jika 'Male/Female', jelaskan apakah suaranya berat (deep), serak (raspy), bersih (clean), berpuncak tinggi (high-pitched), atau berbisik (airy/breathy).
+  - Sesuaikan gaya penulisan agar cocok dengan karakter vokal ${vocal}. Dekripsikan vokal secara teknis: jika 'Male/Female', jelaskan apakah suaranya berat (deep), serak (raspy), bersih (clean), berpuncak tinggi (high-pitched), atau berbisik (airy/breathy). 
+  - Jika vokal mengandung 'Scream', tambahkan instruksi untuk 'Aggressive screamed vocals/growls'. Jika 'No Scream', pastikan vokal tetap 'Clean and melodic throughout'.
+  - Jika vokal 'Bass Dalam', tekankan pada 'Deep resonant bass male vocals'. Jika 'Serak', gunakan istilah 'Raspy/Gritty vocal texture'.
   - PENTING: Jika vokal mengandung 'No Effects Reverb' atau 'Vocals Bersih', pastikan deskripsi menggunakan kata kunci 'Dry', 'Raw', 'Unprocessed', 'Clean', dan 'Direct' untuk vokal tersebut.
-  - PENTING: Untuk musik dan vokal secara umum, gunakan pendekatan "RAW & DRY PRODUCTION" jika parameter mendukung. Hindari penggunaan efek reverb, delay, atau echo yang berlebihan di dalam deskripsi. Tekankan pada suara yang 'Natural', 'Organic', dan 'Dry' agar terdengar jujur dan tanpa polesan efek elektronik.
+  - PENTING: Untuk musik dan vokal, gunakan pendekatan "RAW, DRY & CLEAN PRODUCTION". DILARANG KERAS menggunakan efek reverb, delay, echo, atau ambient yang berlebihan dalam deskripsi. Tekankan pada suara instrumen yang 'Direct', 'Natural', 'Organic', dan 'Dry' tanpa polesan efek elektronik.
   - Tempo ${tempo} harus mempengaruhi ritme kata.
   - Jika ada pilihan Intro/Opening (${introOpening}), sertakan deskripsi awal dalam musik style sesuai instrumen pendukung genre ${genre}.
 
   Deskripsi Style Musik:
   - Berikan panduan aransemen musik yang detail dan dinamis untuk SETIAP BAGIAN lagu (Intro, Verse, Chorus, Bridge, Outro).
-  - PENTING: Deskripsi vokal di baris pertama HARUS mendalam dan tekankan pada 'Dry vocals' (vokal tanpa efek). Gunakan kata kunci tekstur suara yang dipahami AI musik (seperti: 'Dry vocal with raspy texture', 'Natural clean pop vocals', 'Organic high pitched voice', 'Direct emotional delivery') agar identitas vokal '${vocal}' konsisten dan jernih.
-  - PENTING: Deskripsi ini HARUS menjadi dasar atau "blueprint" yang sinkron dengan instruksi metadata yang Anda tulis di dalam kurung pada label struktur lirik (misal: jika di deskripsi menyebutkan "Chorus yang meledak dengan distorsi", maka label lirik harus [Chorus (Distorted Guitar, ...)]).
+  - PENTING: Deskripsi vokal dan instrumen ditekankan pada 'Dry & Clean sound' (tanpa efek reverb/delay). Gunakan kata kunci tekstur suara yang dipahami AI musik (seperti: 'Dry vocal', 'Raw instrument sound', 'Natural clean pop vocals', 'Direct and dry mix') agar hasil akhir jernih dan tanpa gema.
+  - PENTING: Deskripsi ini HARUS menjadi dasar atau "blueprint" yang sinkron dengan instruksi metadata yang Anda tulis di dalam kurung pada label struktur lirik (misal: jika di deskripsi menyebutkan "Chorus yang meledak dengan distorsi", maka label lirik harus [Chorus (Distorted Guitar, Dry Vocals, ...)]).
   - Jelaskan pergeseran intensitas instrumen (misal: "Verse tenang dengan piano, Chorus meledak dengan distorsi gitar dan drum yang dinamis") agar sesuai dengan genre ${genre}.
   - PENTING: JANGAN PERNAH menyebutkan nama tokoh/pencipta lagu (${songwriter}), nama artis, atau nama band manapun di dalam deskripsi ini. Gunakan hanya deskripsi teknis musik, instrumen, dan suasana (mood) saja. Hal ini penting agar deskripsi tidak diblokir oleh sistem AI musik eksternal (seperti Suno/Udio).
   - PENTING: Jika vokal '${vocal}' mengandung kata 'Male' atau 'Female', wajib mencantumkan identitas vokal tersebut secara menyatu dalam narasi di baris pertama deskripsi.
