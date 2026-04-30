@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Music, Sparkles, Send, Loader2, History, Trash2, PenTool, ArrowLeft, Copy, Check, ShieldCheck } from 'lucide-react';
-import { describeLyrics, generateNewLyrics, rewriteToAvoidCopyright } from './services/geminiService';
+import { Music, Sparkles, Send, Loader2, History, Trash2, PenTool, ArrowLeft, Copy, Check } from 'lucide-react';
+import { describeLyrics, generateNewLyrics } from './services/geminiService';
 
 const SONGWRITERS = [
   "Ahmad Dhani", "Rhoma Irama", "Opick", "Dody Kangen Band", 
@@ -16,7 +16,7 @@ const MODELS = [
 
 const DURATIONS = ["5mnt", "6mnt", "7mnt", "8mnt", "9mnt", "10mnt"];
 
-const GENRES = ["Slowrock", "Poprock", "Pop", "Rock", "Pop Akustik", "Rock Akustik", "Orchestra", "Remix Vibe slow Tiktok", "Remix Vibe Sound Horeg", "DJ Horeg Viral"];
+const GENRES = ["Slowrock", "Poprock", "Pop", "Rock", "Pop Akustik", "Rock Akustik", "Orchestra"];
 
 const VOCALS = ["Male", "Female", "Bernafas", "Sedih", "Vocals Slowrock", "Vocals Pop"];
 
@@ -63,7 +63,6 @@ export default function App() {
   const [copiedTitle, setCopiedTitle] = useState(false);
   const [copiedLyrics, setCopiedLyrics] = useState(false);
   const [copiedStyle, setCopiedStyle] = useState(false);
-  const [avoidCopyright, setAvoidCopyright] = useState(false);
 
   const toggleSelection = (list: string[], setList: (l: string[]) => void, item: string) => {
     if (list.includes(item)) {
@@ -88,13 +87,8 @@ export default function App() {
     setView('analysis');
 
     try {
-      if (avoidCopyright) {
-        const rewritten = await rewriteToAvoidCopyright(lyrics, selectedModel);
-        setResult(rewritten);
-      } else {
-        const description = await describeLyrics(lyrics, selectedModel);
-        setResult(description);
-      }
+      const description = await describeLyrics(lyrics, selectedModel);
+      setResult(description);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Terjadi kesalahan.');
     } finally {
@@ -103,26 +97,22 @@ export default function App() {
   };
 
   const handleGenerateNew = async () => {
-    if (!lyrics) return;
-    if (!avoidCopyright && !result) return;
+    if (!lyrics || !result) return;
 
     setGenerating(true);
     setError('');
     
     try {
-      // Use rewritten lyrics if available as the source for generation
-      const sourceLyrics = (avoidCopyright && result) ? result : lyrics;
       const { title, lyrics: generatedLyrics, musicStyle: style } = await generateNewLyrics(
-        sourceLyrics, 
-        result || lyrics, 
+        lyrics, 
+        result, 
         selectedSongwriter, 
         selectedModel,
         selectedDuration,
         selectedGenres.join(', '),
         selectedVocals.join(', '),
         selectedTempos.join(', '),
-        selectedIntros.join(', '),
-        avoidCopyright
+        selectedIntros.join(', ')
       );
       setNewTitle(title);
       setNewLyrics(generatedLyrics);
@@ -222,22 +212,9 @@ export default function App() {
           {/* Input Section */}
           <section className="glass-panel p-6 flex flex-col gap-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <h2 className="text-sm font-semibold uppercase tracking-widest text-white/40 flex items-center gap-2">
-                  <Send className="w-4 h-4" /> Input Lirik
-                </h2>
-                <button
-                  onClick={() => setAvoidCopyright(!avoidCopyright)}
-                  className={`flex items-center gap-2 px-3 py-1 rounded-full text-[10px] uppercase tracking-tighter border transition-all ${
-                    avoidCopyright 
-                      ? 'bg-blue-500/20 border-blue-500 text-blue-400' 
-                      : 'bg-white/5 border-white/10 text-white/30 hover:bg-white/10'
-                  }`}
-                >
-                  <ShieldCheck className={`w-3 h-3 ${avoidCopyright ? 'text-blue-400' : 'text-white/30'}`} />
-                  Hindari Hak Cipta
-                </button>
-              </div>
+              <h2 className="text-sm font-semibold uppercase tracking-widest text-white/40 flex items-center gap-2">
+                <Send className="w-4 h-4" /> Input Lirik
+              </h2>
               {lyrics && (
                 <button 
                   onClick={clearAll}
@@ -264,12 +241,12 @@ export default function App() {
               {loading ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  {avoidCopyright ? 'Sedang Merombak...' : 'Menganalisis...'}
+                  Menganalisis...
                 </>
               ) : (
                 <>
                   <Sparkles className="w-5 h-5" />
-                  {avoidCopyright ? 'Rombak & Hindari Hak Cipta' : 'Deskripsikan'}
+                  Deskripsikan
                 </>
               )}
             </button>
@@ -280,11 +257,7 @@ export default function App() {
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold uppercase tracking-widest text-white/40 flex items-center gap-2">
                 {view === 'analysis' ? (
-                  avoidCopyright ? (
-                    <><ShieldCheck className="w-4 h-4" /> Lirik Aman Hak Cipta</>
-                  ) : (
-                    <><History className="w-4 h-4" /> Hasil Analisis</>
-                  )
+                  <><History className="w-4 h-4" /> Hasil Analisis</>
                 ) : (
                   <><PenTool className="w-4 h-4" /> Lirik Baru</>
                 )}
@@ -314,9 +287,7 @@ export default function App() {
                       <Sparkles className="absolute inset-0 m-auto w-4 h-4 text-[#ff4e00] animate-pulse" />
                     </div>
                     <p className="animate-pulse">
-                      {loading 
-                        ? (avoidCopyright ? 'LyricLens sedang merombak diksi...' : 'LyricLens sedang merangkai kata...') 
-                        : `${selectedSongwriter} sedang merangkai kata...`}
+                      {loading ? 'LyricLens sedang merangkai kata...' : `${selectedSongwriter} sedang merangkai kata...`}
                     </p>
                   </motion.div>
                 ) : error ? (
@@ -328,29 +299,17 @@ export default function App() {
                   >
                     {error}
                   </motion.div>
-                ) : view === 'analysis' && (result || avoidCopyright) ? (
+                ) : view === 'analysis' && result ? (
                   <motion.div
                     key="result"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     className="flex flex-col h-full"
                   >
-                    <div className={`${avoidCopyright ? 'whitespace-pre-wrap' : ''} space-y-6 font-serif leading-relaxed text-lg text-white/90 flex-1`}>
-                      {result ? (
-                        avoidCopyright ? (
-                          result
-                        ) : (
-                          result.split('\n\n').map((para, i) => (
-                            <p key={i}>{para}</p>
-                          ))
-                        )
-                      ) : (
-                        <div className="h-40 flex flex-col items-center justify-center border-2 border-dashed border-white/5 rounded-2xl text-white/10 text-sm text-center px-8 gap-2">
-                          <ShieldCheck className="w-8 h-8 opacity-20" />
-                          <p>Mode Hindari Hak Cipta Aktif.</p>
-                          <p className="text-[10px] opacity-50 uppercase tracking-widest">Silakan Klik "Rombak & Hindari Hak Cipta" atau langsung atur musik di bawah.</p>
-                        </div>
-                      )}
+                    <div className="space-y-6 font-serif leading-relaxed text-lg text-white/90 flex-1">
+                      {result.split('\n\n').map((para, i) => (
+                        <p key={i}>{para}</p>
+                      ))}
                     </div>
                     
                     <div className="mt-8 space-y-6 pt-6 border-t border-white/10">
@@ -466,26 +425,13 @@ export default function App() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       onClick={handleGenerateNew}
-                      disabled={avoidCopyright ? !lyrics : !result}
-                      className={`mt-8 py-4 px-4 rounded-2xl transition-all flex flex-col items-center justify-center gap-1 group shadow-lg ${
-                        (avoidCopyright ? lyrics : result) 
-                          ? 'bg-[#ff4e00] hover:bg-[#ff6a26] text-white shadow-[#ff4e00]/20' 
-                          : 'bg-white/5 text-white/20 cursor-not-allowed grayscale'
-                      }`}
+                      className="mt-8 py-4 px-4 rounded-2xl bg-[#ff4e00] hover:bg-[#ff6a26] text-white transition-all flex flex-col items-center justify-center gap-1 group shadow-lg shadow-[#ff4e00]/20"
                     >
                       <div className="flex items-center gap-2">
-                        <PenTool className={`w-5 h-5 ${(avoidCopyright ? lyrics : result) ? 'group-hover:scale-110 transition-transform' : ''}`} />
-                        <span className="font-bold uppercase tracking-widest text-xs">Jadikan Lirik Baru</span>
+                        <PenTool className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                        <span className="font-bold">Jadikan Lirik Baru</span>
                       </div>
-                      {(avoidCopyright ? lyrics : result) && (
-                        <div className="text-[10px] opacity-60 flex items-center gap-1.5 font-medium italic">
-                          <span>Gaya {selectedSongwriter}</span>
-                          <span className="w-1 h-1 rounded-full bg-white/40" />
-                          <span>{selectedGenres.join('/')}</span>
-                          <span className="w-1 h-1 rounded-full bg-white/40" />
-                          <span>{selectedDuration}</span>
-                        </div>
-                      )}
+                      <span className="text-[10px] opacity-70">Gaya {selectedSongwriter} • {selectedGenres.join('/')} • {selectedDuration}</span>
                     </motion.button>
 
                     <div className="mt-6 flex flex-col gap-2 pt-4 border-t border-white/5">
