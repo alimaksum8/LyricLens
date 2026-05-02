@@ -16,9 +16,9 @@ const MODELS = [
 
 const DURATIONS = ["5mnt", "6mnt", "7mnt", "8mnt", "9mnt", "10mnt"];
 
-const GENRES = ["Slowrock", "Poprock", "Pop", "Rock", "Pop Akustik", "Rock Akustik", "Orchestra"];
+const GENRES = ["Slowrock", "Poprock", "Pop", "Rock"];
 
-const VOCALS = ["Male", "Female", "Bernafas", "Sedih", "Vocals Slowrock", "Vocals Pop", "No Effects Reverb", "Vocals Bersih", "No Scream", "Scream", "Bass Dalam", "Serak"];
+const VOCALS = ["Male", "Female", "Bernafas", "Sedih", "Vocals Slowrock", "Vocals Pop", "Vocals Reverb", "Effect", "Growl", "Atmosfer", "Scream"];
 
 const TEMPOS = [
   "40-60 BPM",
