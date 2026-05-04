@@ -16,9 +16,11 @@ const MODELS = [
 
 const DURATIONS = ["5mnt", "6mnt", "7mnt", "8mnt", "9mnt", "10mnt"];
 
-const GENRES = ["Slowrock", "Poprock", "Pop", "Rock", "Pop Akustik", "Rock Akustik"];
+const GENRES = ["Slowrock", "Poprock", "Pop", "Rock", "Pop Akustik", "Rock Akustik", "Orchestra"];
 
-const VOCALS = ["Male", "Female", "Bernafas", "Sedih", "Vocals Slowrock", "Vocals Pop"];
+const VOCALS = ["Male", "Female", "Bernafas", "Sedih", "Serak", "Bass Dalam", "Vocals Slowrock", "Vocals Pop"];
+
+const INSTRUMENTS = ["Standard", "Akustik", "Full Band", "Slowrock Malaysia", "Gitar Akustik", "Piano", "Orchestral Strings"];
 
 const TEMPOS = [
   "40-60 BPM",
@@ -58,6 +60,7 @@ export default function App() {
   const [selectedDuration, setSelectedDuration] = useState(DURATIONS[0]);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([GENRES[0]]);
   const [selectedVocals, setSelectedVocals] = useState<string[]>([VOCALS[0]]);
+  const [selectedInstruments, setSelectedInstruments] = useState<string[]>([]);
   const [selectedTempos, setSelectedTempos] = useState<string[]>([TEMPOS[2]]);
   const [selectedIntros, setSelectedIntros] = useState<string[]>([]);
   const [copiedTitle, setCopiedTitle] = useState(false);
@@ -112,7 +115,8 @@ export default function App() {
         selectedGenres.join(', '),
         selectedVocals.join(', '),
         selectedTempos.join(', '),
-        selectedIntros.join(', ')
+        selectedIntros.join(', '),
+        selectedInstruments.join(', ')
       );
       setNewTitle(title);
       setNewLyrics(generatedLyrics);
@@ -378,6 +382,26 @@ export default function App() {
                             </div>
                           </div>
 
+                          {/* Instruments Select */}
+                          <div className="flex flex-col gap-2">
+                            <span className="text-[10px] text-white/20 uppercase tracking-tighter">Instruments:</span>
+                            <div className="flex flex-wrap gap-2">
+                              {INSTRUMENTS.map((inst) => (
+                                <button
+                                  key={inst}
+                                  onClick={() => toggleSelection(selectedInstruments, setSelectedInstruments, inst)}
+                                  className={`px-3 py-1.5 rounded-lg text-xs transition-all border ${
+                                    selectedInstruments.includes(inst)
+                                      ? 'bg-[#ff4e00]/15 border-[#ff4e00] text-white'
+                                      : 'bg-white/5 border-white/10 text-white/40'
+                                  }`}
+                                >
+                                  {inst}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
                           {/* Vocals Select */}
                           <div className="flex flex-col gap-2">
                             <span className="text-[10px] text-white/20 uppercase tracking-tighter">Vocals:</span>
@@ -512,6 +536,9 @@ export default function App() {
                       {/* Settings Summary */}
                       <div className="flex flex-wrap gap-2 text-[10px] text-white/40 border-b border-white/5 pb-4">
                         <span className="bg-white/5 px-2 py-0.5 rounded">Duration: {selectedDuration}</span>
+                        {selectedInstruments.length > 0 && (
+                          <span className="bg-white/5 px-2 py-0.5 rounded">Instruments: {selectedInstruments.join(', ')}</span>
+                        )}
                         <span className="bg-white/5 px-2 py-0.5 rounded">Vocals: {selectedVocals.join(', ')}</span>
                         <span className="bg-white/5 px-2 py-0.5 rounded">Tempo: {selectedTempos.join(', ')}</span>
                         {selectedIntros.length > 0 && (

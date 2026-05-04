@@ -1,6 +1,30 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, Type } from "@google/genai";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+/**
+ * Utility to extract JSON from a string that might contain markdown blocks or extra text.
+ */
+function extractJson(text: string): any {
+  try {
+    // Attempt direct parse first
+    return JSON.parse(text);
+  } catch (e) {
+    // Search for the first { and last } to isolate the JSON object
+    const start = text.indexOf('{');
+    const end = text.lastIndexOf('}');
+    
+    if (start !== -1 && end !== -1 && end > start) {
+      const potentialJson = text.substring(start, end + 1);
+      try {
+        return JSON.parse(potentialJson);
+      } catch (innerError) {
+        console.error("Failed to parse extracted JSON:", innerError);
+      }
+    }
+    throw e; // Rethrow if extraction fails or is not found
+  }
+}
 
 export async function describeLyrics(lyrics: string, model: string = "gemini-3-flash-preview"): Promise<string> {
   if (!lyrics.trim()) {
@@ -39,7 +63,8 @@ export async function generateNewLyrics(
   genre: string = "Slowrock",
   vocal: string = "Male",
   tempo: string = "80-100 BPM",
-  introOpening: string = ""
+  introOpening: string = "",
+  instruments: string = ""
 ): Promise<{ title: string; lyrics: string; musicStyle: string }> {
   if (!originalLyrics.trim()) {
     throw new Error("Lirik asli tidak ditemukan.");
@@ -49,22 +74,24 @@ export async function generateNewLyrics(
   - Genre: ${genre}
   - Karakter Vokal: ${vocal}
   - Tempo: ${tempo}
+  - Instrumen Utama: ${instruments || "Standar sesuai genre"}
   - Intro/Opening: ${introOpening || "Standar sesuai genre"}
 
   Target Durasi Lagu: ${duration}.
   PENTING: Aturlah panjang lirik agar pas dengan durasi ${duration} tersebut. Jika durasi cukup panjang (seperti 8-10 menit), Anda BOLEH menambahkan pengulangan Reff/Chorus (misal: [Chorus 2x]), menambahkan Bridge yang lebih panjang, atau menambahkan bagian [Interlude/Solo Instrument Representation] jika dirasa perlu untuk menambah estetika aliran lagu.
 
-  Karakteristik Aliran Musik (Genre: ${genre}, Vokal: ${vocal}, Tempo: ${tempo}, Intro: ${introOpening}):
+  Karakteristik Aliran Musik (Genre: ${genre}, Vokal: ${vocal}, Tempo: ${tempo}, Instrumen: ${instruments}, Intro: ${introOpening}):
   - Pastikan diksi dan pemilihan kata mendukung nuansa ${genre}.
   - Sesuaikan gaya penulisan agar cocok dengan karakter vokal ${vocal} (misal: jika 'Bernafas' atau 'Sedih' dipilih, gunakan kalimat yang lebih emosional dan memberi ruang jeda nafas).
   - Tempo ${tempo} harus mempengaruhi ritme kata; tempo lambat membutuhkan kata-kata yang lebih panjang/dalam, sementara tempo cepat membutuhkan rima yang lebih dinamis.
+  - Jika ada pilihan Instrumen (${instruments}), berikan penekanan pada instrumen tersebut dalam aransemen.
   - Jika ada pilihan Intro/Opening (${introOpening}), sertakan deskripsi awal dalam musik style atau arahkan penulisan lirik pembuka untuk menyesuaikan dengan ambience tersebut.
 
   Deskripsi Style Musik:
-  - Berikan panduan aransemen musik yang detail meliputi instrumen utama, mood, dan cara membawakan lagu ini agar sesuai dengan jiwa ${songwriter} dan parameter yang dipilih (${genre}, ${vocal}, ${tempo}, ${introOpening}).
+  - Berikan panduan aransemen musik yang detail meliputi instrumen utama, mood, dan cara membawakan lagu ini agar sesuai dengan jiwa ${songwriter} dan parameter yang dipilih (${genre}, ${vocal}, ${tempo}, ${instruments}, ${introOpening}).
   - PENTING: JANGAN PERNAH menyebutkan nama tokoh/pencipta lagu (${songwriter}), nama artis, atau nama band manapun di dalam deskripsi ini. Gunakan hanya deskripsi teknis musik, instrumen, dan suasana (mood) saja. Hal ini penting agar deskripsi tidak diblokir oleh sistem AI musik eksternal (seperti Suno/Udio).
   - PENTING: Jika vokal '${vocal}' mengandung kata 'Male' atau 'Female', wajib mencantumkan identitas vokal tersebut (Male Vocal/Female Vocal) secara menyatu dalam narasi di baris pertama deskripsi. JANGAN gunakan kalimat pembuka kaku seperti "Lagu ini dibawakan oleh...". Gunakan gaya bahasa yang lebih puitis atau deskriptif langsung, contoh: "Suara seorang Female Vocal dengan karakter..." atau "Hadir dengan vokal Male yang..." agar mesin musik AI (seperti Suno/Udio) tetap bisa mengenali gender penyanyi dengan benar.
-  - Sertakan bagaimana bagian Intro (${introOpening}) dimainkan secara detail.
+  - Sertakan bagaimana bagian Intro (${introOpening}) dan Instrumen (${instruments}) dimainkan secara detail.
   - PENTING: Jangan gunakan awalan kalimat seperti "Aransemen khas..." atau "Gaya musik...". Langsung saja jelaskan karakteristik musik secara naratif dan menyatu tanpa menyebut nama tokoh.
   - PENTING: Maksimal 980 karakter.
 
@@ -92,29 +119,42 @@ export async function generateNewLyrics(
   Analisis Makna:
   ${analysis}
 
-  PENTING: Kembalikan jawaban dalam format JSON mentah (tanpa markdown block) dengan struktur:
-  {
-    "title": "Judul Lagu Disini",
-    "lyrics": "Lirik Lagu Lengkap Dengan Struktur Disini",
-    "musicStyle": "Deskripsi Style Musik Disini (Maks 980 Karakter)"
-  }`;
+  PENTING: Kembalikan jawaban dalam format JSON dengan struktur yang ditentukan.`;
 
   try {
     const response = await ai.models.generateContent({
       model: model,
       contents: prompt,
       config: {
-        responseMimeType: "application/json"
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            title: {
+              type: Type.STRING,
+              description: "Judul lagu baru"
+            },
+            lyrics: {
+              type: Type.STRING,
+              description: "Lirik lagu lengkap dengan struktur"
+            },
+            musicStyle: {
+              type: Type.STRING,
+              description: "Deskripsi style musik (maks 980 karakter)"
+            }
+          },
+          required: ["title", "lyrics", "musicStyle"]
+        }
       }
     });
 
-    const result = JSON.parse(response.text || "{}");
+    const result = extractJson(response.text || "{}");
     if (!result.title || !result.lyrics || !result.musicStyle) {
       throw new Error("Format respons AI tidak valid.");
     }
     return result;
   } catch (error) {
     console.error("Error generating new lyrics:", error);
-    throw new Error("Terjadi kesalahan saat membuat lirik baru.");
+    throw new Error("Terjadi kesalahan saat membuat lirik baru. " + (error instanceof Error ? error.message : ""));
   }
 }
