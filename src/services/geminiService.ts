@@ -89,11 +89,21 @@ export async function generateNewLyrics(
 
   Deskripsi Style Musik:
   - Berikan panduan aransemen musik yang detail meliputi instrumen utama, mood, dan cara membawakan lagu ini agar sesuai dengan jiwa ${songwriter} dan parameter yang dipilih (${genre}, ${vocal}, ${tempo}, ${instruments}, ${introOpening}).
-  - PENTING: JANGAN PERNAH menyebutkan nama tokoh/pencipta lagu (${songwriter}), nama artis, atau nama band manapun di dalam deskripsi ini. Gunakan hanya deskripsi teknis musik, instrumen, dan suasana (mood) saja. Hal ini penting agar deskripsi tidak diblokir oleh sistem AI musik eksternal (seperti Suno/Udio).
+  - PENTING UNTUK NOSTALGIA SLOW ROCK MALAYSIA 90-AN: Jika genre mengandung "Slowrock" atau instrumental menggunakan "Slowrock Malaysia", deskripsi gaya musik HARUS dengan kuat menggambarkan karakteristik Slow Rock Malaysia era 90-an yang legendaris:
+    1. Vokal bernada tinggi melengking emosional ("soaring high-pitched male, emotional high register chest voice vocal", "highly dramatic vocal belts with rich vibrato" atau versi female yang melengking sedu/ratapan emosional).
+    2. Melodi gitar listrik distorsi yang melengking sangat panjang, melodius, meratap dramatis (melodic screaming wailing electric guitar solo).
+    3. Tempo lambat yang sarat kesedihan mendalam (slow rock tempo, around 70-80 BPM, 4/4 or 6/8 ballad measure).
+    4. Ketukan drum bercirikhas snare dengan wet reverb yang sangat tebal dan dramatis (huge 90s wet room reverb snare, power ballad drums).
+    5. Sapuan keyboard string pads yang melankolis dan mewah di bagian belakang sebagai latar (orchestral synth string pads backdrop, moody atmosphere).
+  - PENTING: JANGAN PERNAH menyebutkan nama tokoh/pencipta lagu (${songwriter}), nama artis, atau nama band manapun di dalam deskripsi ini. Gunakan hanya deskripsi teknis musik, instrumen, dan suasana (mood) saja agar tidak diblokir oleh sistem AI musik eksternal (seperti Suno/Udio).
   - PENTING: Jika vokal '${vocal}' mengandung kata 'Male' atau 'Female', wajib mencantumkan identitas vokal tersebut (Male Vocal/Female Vocal) secara menyatu dalam narasi di baris pertama deskripsi. JANGAN gunakan kalimat pembuka kaku seperti "Lagu ini dibawakan oleh...". Gunakan gaya bahasa yang lebih puitis atau deskriptif langsung, contoh: "Suara seorang Female Vocal dengan karakter..." atau "Hadir dengan vokal Male yang..." agar mesin musik AI (seperti Suno/Udio) tetap bisa mengenali gender penyanyi dengan benar.
   - Sertakan bagaimana bagian Intro (${introOpening}) dan Instrumen (${instruments}) dimainkan secara detail.
   - PENTING: Jangan gunakan awalan kalimat seperti "Aransemen khas..." atau "Gaya musik...". Langsung saja jelaskan karakteristik musik secara naratif dan menyatu tanpa menyebut nama tokoh.
-  - PENTING: Maksimal 980 karakter.
+  - FORMAT DESKRIPSI WAJIB:
+    Tulis deskripsi dalam 2 bagian dalam satu teks gabungan:
+    1. Di paragraf pertama, berikan narasi puitis-teknis dalam bahasa Indonesia (maksimal 450 karakter).
+    2. Di baris baru setelah paragraf tersebut, tambahkan kumpulan kata kunci/tag bahasa Inggris yang diapit dalam tanda kurung kuadrat agar dapat langsung dicopy-paste pengguna ke kolom model musik seperti Suno/Udio, misalnya: '[Suno/Udio Tags: 90s malay slow rock, malaysian slow rock ballad, soaring high-pitched emotional male vocal, wailing melodic electric guitar, huge room wet reverb snare, analog production style, melancholy, 75 bpm]'
+  - PENTING: Maksimal keseluruhan deskripsi (termasuk tag) adalah 980 karakter.
 
   Karakteristik Judul:
   1. Bahasa yang mudah dihafal dan lugas.
