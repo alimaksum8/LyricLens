@@ -31,12 +31,11 @@ export async function describeLyrics(lyrics: string, model: string = "gemini-3-f
     throw new Error("Lirik tidak boleh kosong.");
   }
 
-  const prompt = `Jelaskan secara detail keseluruhan isi lirik lagu berikut ini. 
-  Berikan analisis mendalam tentang makna, emosi, dan pesan yang ingin disampaikan.
-  Tugas Anda adalah merangkum penjelasan tersebut menjadi tepat 3 paragraf.
-  Gunakan bahasa Indonesia yang mengalir, ekspresif, dan puitis namun tetap lugas.
+  const prompt = `Uraikan secara detail, indah, dan mendalam kisah, jalan cerita, perasaan, dan pesan yang ada di dalam lirik lagu berikut ini.
+  Jelaskan dengan sangat jelas lirik lagu ini menceritakan tentang drama kehidupan/cinta apa, emosi apa saja yang dirasakan tokohnya, serta inti pesan yang ingin disampaikan penyairnya.
+  Rangkumlah penjelasan cerita dan makna tersebut menjadi tepat 3 paragraf dengan gaya bahasa Indonesia yang mengalir puitis, ekspresif, namun tetap lugas dan mudah dipahami. Soal ceritanya harus tergambar nyata dan menyentuh.
 
-  PENTING: Jangan gunakan kalimat pembuka seperti "Lirik ini melukiskan...", "Lirik tersebut menggambarkan...", atau sejenisnya. Langsung saja masuk ke inti pembahasan dengan gaya bahasa yang natural dan tidak kaku.
+  PENTING: Harap langsung masuk ke inti cerita lirik tanpa menggunakan kalimat pembuka template yang kaku (seperti "Lirik ini menceritakan tentang...", "Lirik tersebut menggabarkan...", "Lagu ini mengisahkan...", atau sejenisnya). Buatlah awal paragraf pertama langsung mengalir puitis secara natural.
 
   Lirik:
   ${lyrics}`;
@@ -96,6 +95,7 @@ export async function generateNewLyrics(
     4. Ketukan drum bercirikhas snare dengan wet reverb yang sangat tebal dan dramatis (huge 90s wet room reverb snare, power ballad drums).
     5. Sapuan keyboard string pads yang melankolis dan mewah di bagian belakang sebagai latar (orchestral synth string pads backdrop, moody atmosphere).
   - PENTING: JANGAN PERNAH menyebutkan nama tokoh/pencipta lagu (${songwriter}), nama artis, atau nama band manapun di dalam deskripsi ini. Gunakan hanya deskripsi teknis musik, instrumen, dan suasana (mood) saja agar tidak diblokir oleh sistem AI musik eksternal (seperti Suno/Udio).
+  - PENTING SANGAT KRITIS: JANGAN PERNAH menggunakan kata "irama" (baik huruf kecil, besar, atau campuran, seperti "irama", "Irama", "IRAMA") di bagian deskripsi musik 'musicStyle' maupun tags. Gantikan kata tersebut selalu dengan kata lain seperti "ritme", "alunan", "tempo", "melodi", atau "beat". Suno/Udio menyensor kata "irama" karena dianggap merujuk ke artis "Rhoma Irama".
   - PENTING: Jika vokal '${vocal}' mengandung kata 'Male' atau 'Female', wajib mencantumkan identitas vokal tersebut (Male Vocal/Female Vocal) secara menyatu dalam narasi di baris pertama deskripsi. JANGAN gunakan kalimat pembuka kaku seperti "Lagu ini dibawakan oleh...". Gunakan gaya bahasa yang lebih puitis atau deskriptif langsung, contoh: "Suara seorang Female Vocal dengan karakter..." atau "Hadir dengan vokal Male yang..." agar mesin musik AI (seperti Suno/Udio) tetap bisa mengenali gender penyanyi dengan benar.
   - Sertakan bagaimana bagian Intro (${introOpening}) dan Instrumen (${instruments}) dimainkan secara detail.
   - PENTING: Jangan gunakan awalan kalimat seperti "Aransemen khas..." atau "Gaya musik...". Langsung saja jelaskan karakteristik musik secara naratif dan menyatu tanpa menyebut nama tokoh.
@@ -111,11 +111,12 @@ export async function generateNewLyrics(
   3. Terasa global dan bisa diterima oleh semua kalangan (anak-anak, muda-mudi, dewasa, rakyat kecil, elit politik, hingga akademis).
 
   Karakteristik Lirik:
-  1. Gunakan ciri khas bahasa, diksi, dan penataan kalimat yang sangat spesifik dari ${songwriter}.
-  2. Pastikan penataan bahasa "enak dinyanyikan" (singable), memiliki aliran yang pas dengan nafas penyanyi, dan rima yang tidak dipaksakan namun harmonis.
-  3. Perhatikan struktur lagu khas mereka (seperti penempatan Chorus yang kuat atau Bridge yang emosional).
-  4. MAKSUD DAN INTI PESAN LIRIK HARUS TETAP SAMA DENGAN ASLINYA, namun dibalut dalam "jiwa" ${songwriter}, genre ${genre}, vokal ${vocal}, dan tempo ${tempo}.
-  5. STRUKTUR LIRIK (jumlah bait, urutan verse/chorus) dan JUMLAH KATA PER BARIS HARUS PERSIS SAMA DENGAN LIRIK ASLI. Hitunglah jumlah kata di setiap baris lirik asli, dan pastikan baris yang bersangkutan di lirik baru memiliki jumlah kata yang sama persis. Hal ini sangat penting agar melodi dan ritme lagu tetap bisa digunakan tanpa perubahan.
+  1. Ambil esensi makna, emosi, dan pesan mendalam dari "Hasil Analisis Makna" (deskripsi), lalu ubah menjadi bait-bait lirik baru yang sangat puitis, kaya rasa, bernilai seni tinggi, dan bermakna mendalam.
+  2. Gunakan gaya bahasa khas, diksi puitis, rima indah, dan estetika penulisan kalimat yang sangat spesifik dari pencipta lagu ${songwriter} serta selaraskan dengan vibes dari genre ${genre} yang dipilih.
+  3. Pastikan penataan rima dan baris lirik terasa "enak dinyanyikan" (singable), alami, dan memiliki aliran puitis yang menyatu dengan nafas vokal ${vocal} serta ritme tempo ${tempo}.
+  4. Perhatikan struktur lagu khas mereka (seperti penempatan Chorus penentu atau Bridge klimaks yang emosional).
+  5. MAKSUD DAN INTI PESAN LIRIK SEPERTI YANG DIJELASKAN DI HASIL ANALISIS MAKNA (DESKRIPSI) HARUS TETAP SAMA DENGAN ASLINYA, namun dibungkus secara segar, kreatif, dan berdaya puitis tinggi sesuai "jiwa" serta gaya penulisan unik ${songwriter}.
+  6. STRUKTUR LIRIK (jumlah bait, urutan verse/chorus) dan JUMLAH KATA PER BARIS HARUS PERSIS SAMA DENGAN LIRIK ASLI. Hitunglah jumlah kata di setiap baris lirik asli, lalu buatlah baris lirik baru dengan jumlah kata yang sama persis agar melodi, rima, dan ritme lagu asli tetap bisa digunakan secara sempurna tanpa mengubah durasi ${duration}.
 
   Panduan Khusus Tokoh:
   - Jika Ahmad Dhani: Diksi filosofis, puitis, metafora cerdas, nuansa rock-intelek.
@@ -170,7 +171,22 @@ export async function generateNewLyrics(
     if (!result.title || !result.lyrics || !result.musicStyle) {
       throw new Error("Format respons AI tidak valid.");
     }
-    return result;
+    
+    // Programmatic filter to sanitize any accidental occurrences of "irama" to bypass Suno filters
+    const cleanWord = (text: string) => {
+      if (!text) return "";
+      return text.replace(/irama/gi, (match) => {
+        if (match === "IRAMA") return "RITME";
+        if (match === "Irama") return "Ritme";
+        return "ritme";
+      });
+    };
+
+    return {
+      title: cleanWord(result.title),
+      lyrics: cleanWord(result.lyrics),
+      musicStyle: cleanWord(result.musicStyle)
+    };
   } catch (error) {
     console.error("Error generating new lyrics:", error);
     throw new Error("Terjadi kesalahan saat membuat lirik baru. " + (error instanceof Error ? error.message : ""));

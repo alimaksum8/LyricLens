@@ -261,7 +261,7 @@ export default function App() {
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold uppercase tracking-widest text-white/40 flex items-center gap-2">
                 {view === 'analysis' ? (
-                  <><History className="w-4 h-4" /> Hasil Analisis</>
+                  <><History className="w-4 h-4" /> Kisah & Makna Lirik</>
                 ) : (
                   <><PenTool className="w-4 h-4" /> Lirik Baru</>
                 )}
@@ -271,7 +271,7 @@ export default function App() {
                   onClick={() => setView('analysis')}
                   className="text-white/40 hover:text-white transition-colors flex items-center gap-1 text-xs"
                 >
-                  <ArrowLeft className="w-3 h-3" /> Kembali ke Analisis
+                  <ArrowLeft className="w-3 h-3" /> Kembali ke Kisah Lirik
                 </button>
               )}
             </div>
@@ -581,7 +581,7 @@ export default function App() {
                     className="h-full flex flex-col items-center justify-center text-white/20 text-center"
                   >
                     <Music className="w-12 h-12 mb-4 opacity-10" />
-                    <p>Hasil analisis akan muncul di sini setelah Anda menekan tombol deskripsikan.</p>
+                    <p>Kisah & makna lirik akan muncul di sini setelah Anda menekan tombol deskripsikan.</p>
                   </motion.div>
                 )}
               </AnimatePresence>
