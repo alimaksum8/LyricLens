@@ -98,9 +98,11 @@ export async function generateNewLyrics(
     2. Aransemen instrumen utama WAJIB menggunakan: Gitar Elektrik distorsi yang melengking sangat panjang, melodius, meratap dramatis (melodic screaming wailing electric guitar solo), Gitar Bass yang tebal mendukung harmonisasi, Drum dengan beat slow-rock yang mantap, dan Keyboard sebagai pengiring suasana atmosferik.
     3. Tempo lambat yang sarat kesedihan mendalam (slow rock tempo, around 70-80 BPM, 4/4 or 6/8 ballad measure).
     4. Suasana atmosferik yang dramatis dan mewah di bagian belakang sebagai latar (rich atmosphere backdrop, moody).
+    5. UNTUK SLOWROCK: JANGAN PERNAH menggunakan unsur dangdut, koplo, kendang, atau beat perkusif cepat yang berlebihan. Fokus pada sustain gitar dan emosi vokal.
   - PENTING SANGAT KRITIS: JANGAN PERNAH menyebutkan NAMA TOKOH/PENCIPTA (${songwriter}), nama artis, atau nama band di dalam kotak deskripsi ini. Cukup JIWA DAN GAYA MEREKA saja yang dituangkan dalam deskripsi teknis musik, instrumen, dan suasana agar tidak diblokir sistem AI musik (seperti Suno/Udio).
   - PENTING SANGAT KRITIS: JANGAN PERNAH menggunakan kata "irama" (baik huruf kecil, besar, atau campuran, seperti "irama", "Irama", "IRAMA") di bagian deskripsi musik 'musicStyle' maupun tags. Gantikan kata tersebut selalu dengan kata lain seperti "ritme", "alunan", "tempo", "melodi", atau "beat". Suno/Udio menyensor kata "irama" karena dianggap merujuk ke artis "Rhoma Irama".
-  - PENTING SANGAT KRITIS: JANGAN PERNAH menggunakan kata "cinematic", "string pads", "melancholic", "melankolis", atau "strings pads" di bagian deskripsi musik maupun tags. Guanakan deskripsi suasana teknis lainnya.
+  - PENTING SANGAT KRITIS: JANGAN PERNAH menggunakan kata "cinematic", "string pads", "melancholic", "melankolis", or "strings pads" di bagian deskripsi musik maupun tags. Guanakan deskripsi suasana teknis lainnya.
+  - PENTING: JANGAN PERNAH memasukkan kata "koplo", "dangdut", "kendang", "tabla", "percussive", "upbeat", atau unsur musik dangdut/melayu modern yang berlebihan jika genre yang dipilih adalah Slowrock. Hasil harus murni rock ballad/slow rock.
   - PENTING: Jika vokal '${vocal}' mengandung kata 'Male' atau 'Female', wajib mencantumkan identitas vokal tersebut (Male Vocal/Female Vocal) secara menyatu dalam narasi di baris pertama deskripsi. JANGAN gunakan kalimat pembuka kaku seperti "Lagu ini dibawakan oleh...". Gunakan gaya bahasa yang lebih puitis atau deskriptif langsung, contoh: "Suara seorang Female Vocal dengan karakter..." atau "Hadir dengan vokal Male yang..." agar mesin musik AI (seperti Suno/Udio) tetap bisa mengenali gender penyanyi dengan benar.
   - Sertakan bagaimana bagian Intro (${introOpening}) dan Instrumen (${instruments}) dimainkan secara detail.
   - PENTING: Jangan gunakan awalan kalimat seperti "Aransemen khas..." atau "Gaya musik...". Langsung saja jelaskan karakteristik musik secara naratif dan menyatu tanpa menyebut nama tokoh.
@@ -188,6 +190,7 @@ export async function generateNewLyrics(
       });
       cleaned = cleaned.replace(/melancholic|melankolis|cinematic|string pads|strings pads/gi, "");
       cleaned = cleaned.replace(/melancholy/gi, "");
+      cleaned = cleaned.replace(/koplo|dangdut|kendang|tabla/gi, "");
       cleaned = cleaned.replace(/labirin/gi, (match) => {
         if (match === "LABIRIN") return "LIQU";
         if (match === "Labirin") return "Liku";
