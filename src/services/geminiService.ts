@@ -122,7 +122,7 @@ export async function generateNewLyrics(
   2. Gunakan gaya bahasa khas, diksi puitis, rima indah, dan estetika penulisan kalimat yang SANGAT SPESIFIK dari pencipta lagu ${songwriter} serta selaraskan dengan vibes dari genre ${genre} yang dipilih.
   3. Pastikan penataan rima dan baris lirik terasa "enak dinyanyikan" (singable), alami, dan memiliki aliran puitis yang menyatu dengan nafas vokal ${vocal} serta ritme tempo ${tempo}.
   4. Perhatikan struktur lagu khas mereka (seperti penempatan Chorus penentu atau Bridge klimaks yang emosional).
-  5. MAKSUD DAN INTI PESAN LIRIK SEPERTI YANG DIJELASKAN DI HASIL ANALISIS MAKNA (DESKRIPSI) HARUS TETAP SAMA DENGAN ASLINYA, namun dibungkus secara segar, kreatif, dan berdaya puitis tinggi SESUAI KARAKTER KUAT ${songwriter}.
+  5. MAKSUD DAN INTI PESAN LIRIK SEPERTI YANG DIJELASKAN DI HASIL ANALISIS MAKNA (DESKRIPSI) HARUS TETAP SAMA DENGAN ASLINYA, namun dibungkus secara segar, kreatif, dan berdaya puitis tinggi SESUAI BAHASA DAN KARAKTER KUAT ${songwriter}.
   6. STRUKTUR LIRIK (jumlah bait, urutan verse/chorus) dan JUMLAH KATA PER BARIS HARUS PERSIS SAMA DENGAN LIRIK ASLI. Hitunglah jumlah kata di setiap baris lirik asli, lalu buatlah baris lirik baru dengan jumlah kata yang sama persis agar melodi, rima, dan ritme lagu asli tetap bisa digunakan secara sempurna tanpa mengubah durasi ${duration}.
   7. INSTRUKSI MUSIK PER BAGIAN: Pada setiap label struktur lirik (seperti [Verse], [Chorus], [Bridge], dll), tambahkan instruksi musik di dalam kurung tepat di samping label tersebut. Instruksi harus mencakup: alat musik apa yang dominan, moods-nya bagaimana, karakter vocals-nya seperti apa, dan temponya bagaimana. Contoh: [Chorus (Gitar distorsi melengking, mood sangat emosional, vokal high-pitched, tempo stabil dramatis)].
 
@@ -137,7 +137,7 @@ export async function generateNewLyrics(
   - Jika Tulus: Gunakan bahasa elegan, diksi rapi, modern, minimalis namun bermakna dalam dan puitis modern.
   - Jika Youngky RM/Cecep AS/Deddy Dores: Gunakan gaya Pop-Rock/Slow-Rock melankolis era 80/90-an yang sangat dramatis dan menyayat hati.
   - Jika Pance Pondaag: Gunakan diksi lembut, manis, sederhana, pop nostalgia yang romantis.
-  - Jika Saari Amri: Gunakan gaya melayu kental, puitis mendayu, kiasan kerinduan yang dalam.
+  - Jika Saari Amri: Gunakan gaya Slow-Rock melankolis era 80/90-an yang sangat dramatis dan menyayat hati, melayu kental, puitis mendayu, kiasan kerinduan yang dalam.
   - Jika Teddy Riady: Gunakan kalimat kuat, berkarakter, cinta dewasa yang realistis.
 
   Lirik Asli:
