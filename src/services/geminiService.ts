@@ -86,7 +86,7 @@ export async function generateNewLyrics(
   Karakteristik Aliran Musik Dalam Jiwa ${songwriter}:
   - SESUAIKAN GAYA: Meskipun genre-nya ${genre}, aransemennya harus memiliki "sentuhan" khas ${songwriter}. 
   - Pastikan diksi dan pemilihan kata mendukung nuansa ${genre}.
-  - Sesuaikan gaya penulisan agar cocok dengan karakter vokal ${vocal} (misal: jika 'Bernafas' atau 'Sedih' dipilih, gunakan kalimat yang lebih emosional dan memberi ruang jeda nafas).
+  - Sesuaikan gaya penulisan agar cocok dengan karakter vokal ${vocal} (misal: jika 'Bernafas' atau 'Sedih' dipilih, gunakan kalimat yang lebih emosional dan memberi ruang jeda nafas; jika 'Mendayu khas slowrock malaysia' dipilih, sesuaikan lirik agar mendayu-dayu kental dengan kiasan kerinduan, kepedihan mendalam, rima puitis khas melayu slow-rock 90-an, dan memberi ruang bagi vokal meliuk melengking panjang dengan cengkok yang kuat).
   - Tempo ${tempo} harus mempengaruhi ritme kata; tempo lambat membutuhkan kata-kata yang lebih panjang/dalam, sementara tempo cepat membutuhkan rima yang lebih dinamis.
   - Jika ada pilihan Instrumen (${instruments}), berikan penekanan pada instrumen tersebut dalam aransemen.
   - Jika ada pilihan Intro/Opening (${introOpening}), sertakan deskripsi awal dalam musik style atau arahkan penulisan lirik pembuka untuk menyesuaikan dengan ambience tersebut.
@@ -104,6 +104,7 @@ export async function generateNewLyrics(
   - PENTING SANGAT KRITIS: JANGAN PERNAH menggunakan kata "cinematic", "string pads", "melancholic", "melankolis", or "strings pads" di bagian deskripsi musik maupun tags. Guanakan deskripsi suasana teknis lainnya.
   - PENTING: JANGAN PERNAH memasukkan kata "koplo", "dangdut", "kendang", "tabla", "percussive", "upbeat", atau unsur musik dangdut/melayu modern yang berlebihan jika genre yang dipilih adalah Slowrock. Hasil harus murni rock ballad/slow rock.
   - PENTING: Jika vokal '${vocal}' mengandung kata 'Male' atau 'Female', wajib mencantumkan identitas vokal tersebut (Male Vocal/Female Vocal) secara menyatu dalam narasi di baris pertama deskripsi. JANGAN gunakan kalimat pembuka kaku seperti "Lagu ini dibawakan oleh...". Gunakan gaya bahasa yang lebih puitis atau deskriptif langsung, contoh: "Suara seorang Female Vocal dengan karakter..." atau "Hadir dengan vokal Male yang..." agar mesin musik AI (seperti Suno/Udio) tetap bisa mengenali gender penyanyi dengan benar.
+  - VOKAL MENDAYU KHAS SLOWROCK MALAYSIA: Jika vokal '${vocal}' mengandung 'Mendayu khas slowrock malaysia', deskripsi aransemen HARUS menggambarkan vokal bernada tinggi yang melengking sedu, penuh cengkok khas yang meratap duka mendalam ("heart-wrenching emotional high register voice, authentic 90s malay slow-rock vocal ornaments, dramatic wailing vibrato, soulful sorrowful delivery").
   - Sertakan bagaimana bagian Intro (${introOpening}) dan Instrumen (${instruments}) dimainkan secara detail.
   - PENTING: Jangan gunakan awalan kalimat seperti "Aransemen khas..." atau "Gaya musik...". Langsung saja jelaskan karakteristik musik secara naratif dan menyatu tanpa menyebut nama tokoh.
   - FORMAT DESKRIPSI WAJIB:

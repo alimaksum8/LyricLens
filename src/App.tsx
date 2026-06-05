@@ -18,7 +18,7 @@ const DURATIONS = ["5mnt", "6mnt", "7mnt", "8mnt", "9mnt", "10mnt"];
 
 const GENRES = ["Slowrock", "Poprock", "Pop", "Rock", "Pop Akustik", "Rock Akustik", "Orchestra"];
 
-const VOCALS = ["Male", "Female", "Bernafas", "Sedih", "Serak", "Bass Dalam", "Vocals Slowrock", "Vocals Pop"];
+const VOCALS = ["Male", "Female", "Bernafas", "Sedih", "Serak", "Bass Dalam", "Mendayu khas slowrock malaysia", "Vocals Slowrock", "Vocals Pop"];
 
 const INSTRUMENTS = ["Standard", "Akustik", "Full Band", "Slowrock Malaysia", "Gitar Akustik", "Piano", "Orchestral Strings"];
 
