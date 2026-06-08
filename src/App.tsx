@@ -6,7 +6,7 @@ import { describeLyrics, generateNewLyrics } from './services/geminiService';
 const SONGWRITERS = [
   "Ahmad Dhani", "Rhoma Irama", "Opick", "Dody Kangen Band", 
   "Melly Goeslaw", "Deddy Dores", "Ariel NOAH", "Eros Candra", "Tulus",
-  "Youngky RM", "Cecep AS", "Saari Amri", "Teddy Riady", "Pance Pondaag"
+  "Youngky RM", "Cecep AS", "Saari Amri", "Eddy Hamid", "Teddy Riady", "Pance Pondaag"
 ];
 
 const MODELS = [

@@ -43,7 +43,7 @@ export async function describeLyrics(lyrics: string, songwriter: string, model: 
   Petunjuk Spesifik Gaya Sastra Karakter Pencipta:
   - Jika ${songwriter} terkenal dengan diksi filosofis (seperti Ahmad Dhani): Buatlah analisis makna yang sangat puitis-metaforis cerdas, filosofis, berkelas, penuh kesopanan intelektual, dan bernyawa megah.
   - Jika terkenal dengan religi/spiritual (seperti Opick): Buatlah analisis kontemplatif, syahdu, penuh kerendahan hati yang agung, ramah bertutur santun, puitis religi, dan menyentuh sisi spiritualitas batin secara damai dan sopan.
-  - Jika terkenal dengan emosi pilu/melow slow-rock (seperti Youngky RM/Deddy Dores/Saari Amri): Buatlah analisis makna yang teramat dramatis, sangat pilu, menyayat hati, penuh duka yang sopan dan anggun, menggambarkan kehampaan asmara yang syahdu dan puitis mendalam.
+  - Jika terkenal dengan emosi pilu/melow slow-rock (seperti Youngky RM/Deddy Dores/Saari Amri/Eddy Hamid): Buatlah analisis makna yang teramat dramatis, sangat pilu, menyayat hati, penuh duka atau rasa rindu membara yang sopan dan anggun, menggambarkan kehampaan asmara atau penantian setia yang syahdu, puitis murni, mengalir indah, jelas, lugas, dan sangat menyentuh rasa.
   - Jika terkenal dengan sederhana/rakyat jelata (seperti Dody Kangen Band): Sampaikan dengan bahasa yang sangat santun, tulus, jujur, bersahaja, puitis lugu, bernyawa polos namun menyentuh hati terdalam tanpa basa-basi murahan.
   - Sesuaikan sudut pandang bahasa tulisan dengan kepribadian artistik puitis nan beradab dari ${songwriter} terpilih.
 
@@ -181,6 +181,7 @@ export async function generateNewLyrics(
   - Jika Youngky RM/Cecep AS/Deddy Dores: Gunakan gaya Pop-Rock/Slow-Rock melankolis era 80/90-an yang teramat dramatis, pilu menyayat duka lara yang sarat kerinduan puitis yang sopan, bernyawa megah, dan menyentuh sisi duka terdalam manusia.
   - Jika Pance Pondaag: Gunakan diksi lembut, manis, puitis sederhana, bernyawa romantis pop nostalgia yang sangat hangat, ramah, dan sopan dalam mengekspresikan asmara.
   - Jika Saari Amri: Gunakan gaya Slow-Rock melankolis era 80/90-an yang sangat dramatis dan menyayat hati, melayu kental yang puitis mendayu-dayu penuh cengkok, kiasan kerinduan yang dalam, sopan bersahaja, dan penuh kepedihan yang bernyawa duka indah.
+  - Jika Eddy Hamid: Gunakan karakter bahasa lirik yang dikreasi mengalir sangat indah, puitis, mudah dipahami audien, jelas, lugas, bersahaja namun berbobot emosional mendalam seperti karya legendarisnya "Rindu Serindu Rindunya" (oleh Spoon). Fokuskan pada tema rindu yang membara, penantian yang setia, kesucian asmara, kejujuran batin yang tulus-ikhlas, sopan, bernyawa kuat, dan tidak berbelit-belit. Hindari kata-kata kaku buatan AI. Musik khas ciptaannya harus diwarnai aransemen Melayu Slow-Rock 90-an melodius yang agung, dengan melodi gitar yang meraung syahdu melengking panjang merayu sepi, drum slow-rock mantap bertempo 70-80 BPM, dan vokal melengking tinggi penuh penyerahan perasaan yang meratap lembut mendayu.
   - Jika Teddy Riady: Gunakan kalimat kuat, berkarakter, cinta dewasa yang realistis, namun tetap tersampaikan lewat balutan diksi puitis yang sopan, tegap, dan bersahaja.
 
   Lirik Asli:
