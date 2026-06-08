@@ -90,7 +90,7 @@ export default function App() {
     setView('analysis');
 
     try {
-      const description = await describeLyrics(lyrics, selectedModel);
+      const description = await describeLyrics(lyrics, selectedSongwriter, selectedModel);
       setResult(description);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Terjadi kesalahan.');
@@ -231,16 +231,40 @@ export default function App() {
             </div>
             
             <textarea
-              className="lyric-input h-64 lg:h-96"
+              className="lyric-input h-64 lg:h-72"
               placeholder="Tempelkan lirik lagu di sini..."
               value={lyrics}
               onChange={(e) => setLyrics(e.target.value)}
             />
 
+            <div className="space-y-3 pt-2 border-t border-white/5">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-semibold uppercase tracking-widest text-[#ff4e00] flex items-center gap-1.5">
+                  <PenTool className="w-3.5 h-3.5" /> Pilih Gaya Pencipta Lagu:
+                </h3>
+                <span className="text-[10px] text-white/40 italic">Mempengaruhi karakter deskripsi & lirik baru</span>
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                {SONGWRITERS.map((name) => (
+                  <button
+                    key={name}
+                    onClick={() => setSelectedSongwriter(name)}
+                    className={`py-2 px-1 text-[10px] md:text-sm rounded-xl border transition-all duration-200 ${
+                      selectedSongwriter === name 
+                        ? 'bg-[#ff4e00]/20 border-[#ff4e00] text-white font-medium shadow-md shadow-[#ff4e00]/5' 
+                        : 'bg-white/5 border-white/10 text-white/40 hover:bg-white/10 hover:text-white/80'
+                    }`}
+                  >
+                    {name}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <button
               onClick={handleDescribe}
               disabled={loading || generating}
-              className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-primary w-full flex items-center justify-center gap-2 mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <>
@@ -317,25 +341,11 @@ export default function App() {
                     </div>
                     
                     <div className="mt-8 space-y-6 pt-6 border-t border-white/10">
-                      <div className="space-y-4">
-                        <h3 className="text-xs font-semibold uppercase tracking-widest text-white/30">
-                          Pilih Gaya Pencipta Lagu:
-                        </h3>
-                        <div className="grid grid-cols-3 gap-2">
-                          {SONGWRITERS.map((name) => (
-                            <button
-                              key={name}
-                              onClick={() => setSelectedSongwriter(name)}
-                              className={`py-2 px-1 text-[10px] md:text-xs rounded-xl border transition-all ${
-                                selectedSongwriter === name 
-                                  ? 'bg-[#ff4e00]/20 border-[#ff4e00] text-white' 
-                                  : 'bg-white/5 border-white/10 text-white/40 hover:bg-white/10'
-                              }`}
-                            >
-                              {name}
-                            </button>
-                          ))}
-                        </div>
+                      <div className="py-3 px-4 rounded-xl bg-[#ff4e00]/5 border border-[#ff4e00]/10 flex items-center justify-between">
+                        <span className="text-xs text-white/55 uppercase tracking-wider flex items-center gap-1.5 font-medium">
+                          <PenTool className="w-3.5 h-3.5 text-[#ff4e00]" /> Karakter Bahasa & Jiwa:
+                        </span>
+                        <span className="text-xs font-semibold text-white bg-[#ff4e00]/20 border border-[#ff4e00]/30 py-1 px-3 rounded-xl">{selectedSongwriter}</span>
                       </div>
 
                       <div className="space-y-4 pt-4 border-t border-white/5">

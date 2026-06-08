@@ -26,14 +26,29 @@ function extractJson(text: string): any {
   }
 }
 
-export async function describeLyrics(lyrics: string, model: string = "gemini-3-flash-preview"): Promise<string> {
+export async function describeLyrics(lyrics: string, songwriter: string, model: string = "gemini-3-flash-preview"): Promise<string> {
   if (!lyrics.trim()) {
     throw new Error("Lirik tidak boleh kosong.");
   }
 
   const prompt = `Uraikan secara detail, indah, dan mendalam kisah, jalan cerita, perasaan, dan pesan yang ada di dalam lirik lagu berikut ini.
+  
+  PENTING: Sesuaikan gaya penguraian, pilihan kata, sudut pandang, serta seluruh karakter bahasanya agar MEREPRESENTASI ciri khas bahasa yang mudah dipahami, mengalir indah, berjiwa/bernyawa hangat, penuh ketulusan emosi, sopan/santun, agung, serta elegan ciri khas pencipta lagu legendaris Indonesia: ${songwriter}. JADIKAN SEGALA DESKRIPSI INI BENAR-BENAR TERASA SEPERTI DITULIS OLEH SEORANG MANUSIA SASTRAWAN SEJATI (Bukan AI kaku!).
+  
+  PRINSIP BAHASA UNTUK SEMUA GAYA TOKOH:
+  - MUDAH DIPAHAMI & MENGALIR: Sampaikan dengan diksi yang mudah dipahami oleh semua kalangan, mengalir alami bagai air, tidak rumit atau berberlit-belit, namun tetap berbobot rasa yang tinggi.
+  - PUITIS & BERNYAWA: Gunakan diksi-diksi sastrawi yang menghanyutkan jiwa, bernyawa luhur, dan mampu mengetuk sanubari terdalam pembaca. Sampaikan setiap emosi duka maupun suka dengan bahasa yang megah, tulus, dan berbalut empati sastra yang tinggi.
+  - SOPAN, SANTUN & ELEGAN: Hindari diksi kasar, murahan, datar, atau kaku. Gunakan susunan kalimat yang penuh rasa hormat, tulus, bermartabat, dan anggun dalam menafsirkan setiap rasa duka maupun suka.
+  
+  Petunjuk Spesifik Gaya Sastra Karakter Pencipta:
+  - Jika ${songwriter} terkenal dengan diksi filosofis (seperti Ahmad Dhani): Buatlah analisis makna yang sangat puitis-metaforis cerdas, filosofis, berkelas, penuh kesopanan intelektual, dan bernyawa megah.
+  - Jika terkenal dengan religi/spiritual (seperti Opick): Buatlah analisis kontemplatif, syahdu, penuh kerendahan hati yang agung, ramah bertutur santun, puitis religi, dan menyentuh sisi spiritualitas batin secara damai dan sopan.
+  - Jika terkenal dengan emosi pilu/melow slow-rock (seperti Youngky RM/Deddy Dores/Saari Amri): Buatlah analisis makna yang teramat dramatis, sangat pilu, menyayat hati, penuh duka yang sopan dan anggun, menggambarkan kehampaan asmara yang syahdu dan puitis mendalam.
+  - Jika terkenal dengan sederhana/rakyat jelata (seperti Dody Kangen Band): Sampaikan dengan bahasa yang sangat santun, tulus, jujur, bersahaja, puitis lugu, bernyawa polos namun menyentuh hati terdalam tanpa basa-basi murahan.
+  - Sesuaikan sudut pandang bahasa tulisan dengan kepribadian artistik puitis nan beradab dari ${songwriter} terpilih.
+
   Jelaskan dengan sangat jelas lirik lagu ini menceritakan tentang drama kehidupan/cinta apa, emosi apa saja yang dirasakan tokohnya, serta inti pesan yang ingin disampaikan penyairnya.
-  Rangkumlah penjelasan cerita dan makna tersebut menjadi tepat 3 paragraf dengan gaya bahasa Indonesia yang mengalir puitis, ekspresif, namun tetap lugas dan mudah dipahami. Soal ceritanya harus tergambar nyata dan menyentuh.
+  Rangkumlah penjelasan cerita dan makna tersebut menjadi tepat 3 paragraf dengan gaya bahasa Indonesia yang mengalir puitis, mudah dipahami semua orang, syahdu, bernyawa hangat, bebas dari kekakuan robotik, serta kental dengan roh kesopanan tutur rasa dari ${songwriter}. Penjelasannya harus terasa menyentuh kalbu.
 
   PENTING: Harap langsung masuk ke inti cerita lirik tanpa menggunakan kalimat pembuka template yang kaku (seperti "Lirik ini menceritakan tentang...", "Lirik tersebut menggabarkan...", "Lagu ini mengisahkan...", atau sejenisnya). Buatlah awal paragraf pertama langsung mengalir puitis secara natural.
 
@@ -93,6 +108,7 @@ export async function generateNewLyrics(
 
   Deskripsi Style Musik:
   - Berikan panduan aransemen musik yang detail meliputi instrumen utama, mood, dan cara membawakan lagu ini agar BENAR-BENAR MEREPRESENTASI JIWA ${songwriter} dalam parameter yang dipilih (${genre}, ${vocal}, ${tempo}, ${instruments}, ${introOpening}).
+  - MENERAPKAN PARAMETER SECARA PENUH DAN AKURAT: Deskripsi gaya musik yang dihasilkan wajib disesuaikan secara presisi, nyata, dan harmonis dengan genre '${genre}', moods (suasana perasaan hati), vokal '${vocal}', tempo '${tempo}', instrumen '${instruments}', dan intro '${introOpening}' terpilih.
   - PENTING UNTUK NOSTALGIA SLOW ROCK MALAYSIA 90-AN: Jika genre mengandung "Slowrock" atau instrumental menggunakan "Slowrock Malaysia", deskripsi gaya musik HARUS dengan kuat menggambarkan karakteristik Slow Rock Malaysia era 90-an yang legendaris:
     1. Vokal bernada tinggi melengking emosional ("soaring high-pitched male, emotional high register chest voice vocal", "highly dramatic vocal belts with rich vibrato" atau versi female yang melengking sedu/ratapan emosional).
     2. Aransemen instrumen utama WAJIB menggunakan: Gitar Elektrik distorsi yang melengking sangat panjang, melodius, meratap dramatis (melodic screaming wailing electric guitar solo), Gitar Bass yang tebal mendukung harmonisasi, Drum dengan beat slow-rock yang mantap, dan Keyboard sebagai pengiring suasana atmosferik.
@@ -100,10 +116,11 @@ export async function generateNewLyrics(
     4. Suasana atmosferik yang dramatis dan mewah di bagian belakang sebagai latar (rich atmosphere backdrop, moody).
     5. UNTUK SLOWROCK: JANGAN PERNAH menggunakan unsur dangdut, koplo, kendang, atau beat perkusif cepat yang berlebihan. Fokus pada sustain gitar dan emosi vokal.
   - PENTING SANGAT KRITIS: JANGAN PERNAH menyebutkan NAMA TOKOH/PENCIPTA (${songwriter}), nama artis, atau nama band di dalam kotak deskripsi ini. Cukup JIWA DAN GAYA MEREKA saja yang dituangkan dalam deskripsi teknis musik, instrumen, dan suasana agar tidak diblokir sistem AI musik (seperti Suno/Udio).
+  - PENTING SANGAT KRITIS: JANGAN PERNAH menyebutkan kata "tulus" (baik huruf kecil, besar, atau campuran seperti "tulus", "Tulus", "TULUS") di dalam deskripsi style musik 'musicStyle' maupun tags agar tidak terblokir. Ganti dengan kata "penerimaan", "ikhlas", atau "jujur" jika maksudnya adalah ketulusan hati.
   - PENTING SANGAT KRITIS: JANGAN PERNAH menggunakan kata "irama" (baik huruf kecil, besar, atau campuran, seperti "irama", "Irama", "IRAMA") di bagian deskripsi musik 'musicStyle' maupun tags. Gantikan kata tersebut selalu dengan kata lain seperti "ritme", "alunan", "tempo", "melodi", atau "beat". Suno/Udio menyensor kata "irama" karena dianggap merujuk ke artis "Rhoma Irama".
   - PENTING SANGAT KRITIS: JANGAN PERNAH menggunakan kata "cinematic", "string pads", "melancholic", "melankolis", or "strings pads" di bagian deskripsi musik maupun tags. Guanakan deskripsi suasana teknis lainnya.
   - PENTING: JANGAN PERNAH memasukkan kata "koplo", "dangdut", "kendang", "tabla", "percussive", "upbeat", atau unsur musik dangdut/melayu modern yang berlebihan jika genre yang dipilih adalah Slowrock. Hasil harus murni rock ballad/slow rock.
-  - PENTING: Jika vokal '${vocal}' mengandung kata 'Male' atau 'Female', wajib mencantumkan identitas vokal tersebut (Male Vocal/Female Vocal) secara menyatu dalam narasi di baris pertama deskripsi. JANGAN gunakan kalimat pembuka kaku seperti "Lagu ini dibawakan oleh...". Gunakan gaya bahasa yang lebih puitis atau deskriptif langsung, contoh: "Suara seorang Female Vocal dengan karakter..." atau "Hadir dengan vokal Male yang..." agar mesin musik AI (seperti Suno/Udio) tetap bisa mengenali gender penyanyi dengan benar.
+  - PENTING: Jika vokal '${vocal}' mengandung kata 'Male' or 'Female', wajib mencantumkan identitas vokal tersebut (Male Vocal/Female Vocal) secara menyatu dalam narasi di baris pertama deskripsi. JANGAN gunakan kalimat pembuka kaku seperti "Lagu ini dibawakan oleh...". Gunakan gaya bahasa yang lebih puitis atau deskriptif langsung, contoh: "Suara seorang Female Vocal dengan karakter..." atau "Hadir dengan vokal Male yang..." agar mesin musik AI (seperti Suno/Udio) tetap bisa mengenali gender penyanyi dengan benar.
   - VOKAL MENDAYU KHAS SLOWROCK MALAYSIA: Jika vokal '${vocal}' mengandung 'Mendayu khas slowrock malaysia', deskripsi aransemen HARUS menggambarkan vokal bernada tinggi yang melengking sedu, penuh cengkok khas yang meratap duka mendalam ("heart-wrenching emotional high register voice, authentic 90s malay slow-rock vocal ornaments, dramatic wailing vibrato, soulful sorrowful delivery").
   - Sertakan bagaimana bagian Intro (${introOpening}) dan Instrumen (${instruments}) dimainkan secara detail.
   - PENTING: Jangan gunakan awalan kalimat seperti "Aransemen khas..." atau "Gaya musik...". Langsung saja jelaskan karakteristik musik secara naratif dan menyatu tanpa menyebut nama tokoh.
@@ -114,32 +131,57 @@ export async function generateNewLyrics(
   - PENTING: Maksimal keseluruhan deskripsi (termasuk tag) adalah 980 karakter.
 
   Karakteristik Judul:
-  1. Bahasa yang mudah dihafal dan lugas.
+  1. Bahasa yang mudah dihafal, indah, dan lugas.
   2. Memiliki arti yang luas namun bikin penasaran.
   3. Terasa global dan bisa diterima oleh semua kalangan (anak-anak, muda-mudi, dewasa, rakyat kecil, elit politik, hingga akademis).
 
-  Karakteristik Lirik:
-  1. Ambil esensi makna, emosi, dan pesan mendalam dari "Hasil Analisis Makna" (deskripsi), lalu ubah menjadi bait-bait lirik baru yang SANGAT MENJIWAI ${songwriter}.
-  2. Gunakan gaya bahasa khas, diksi puitis, rima indah, dan estetika penulisan kalimat yang SANGAT SPESIFIK dari pencipta lagu ${songwriter} serta selaraskan dengan vibes dari genre ${genre} yang dipilih.
-  3. Pastikan penataan rima dan baris lirik terasa "enak dinyanyikan" (singable), alami, dan memiliki aliran puitis yang menyatu dengan nafas vokal ${vocal} serta ritme tempo ${tempo}.
-  4. Perhatikan struktur lagu khas mereka (seperti penempatan Chorus penentu atau Bridge klimaks yang emosional).
-  5. MAKSUD DAN INTI PESAN LIRIK SEPERTI YANG DIJELASKAN DI HASIL ANALISIS MAKNA (DESKRIPSI) HARUS TETAP SAMA DENGAN ASLINYA, namun dibungkus secara segar, kreatif, dan berdaya puitis tinggi SESUAI BAHASA DAN KARAKTER KUAT ${songwriter}.
-  6. STRUKTUR LIRIK (jumlah bait, urutan verse/chorus) dan JUMLAH KATA PER BARIS HARUS PERSIS SAMA DENGAN LIRIK ASLI. Hitunglah jumlah kata di setiap baris lirik asli, lalu buatlah baris lirik baru dengan jumlah kata yang sama persis agar melodi, rima, dan ritme lagu asli tetap bisa digunakan secara sempurna tanpa mengubah durasi ${duration}.
-  7. INSTRUKSI MUSIK PER BAGIAN: Pada setiap label struktur lirik (seperti [Verse], [Chorus], [Bridge], dll), tambahkan instruksi musik di dalam kurung tepat di samping label tersebut. Instruksi harus mencakup: alat musik apa yang dominan, moods-nya bagaimana, karakter vocals-nya seperti apa, dan temponya bagaimana. Contoh: [Chorus (Gitar distorsi melengking, mood sangat emosional, vokal high-pitched, tempo stabil dramatis)].
+  Karakteristik Lirik (WAJIB BEBAS DARI KEKAKUAN AI, SANGAT PUITIS, MENGALIR ALAMI, DAN SOPAN):
+  ${vocal.toLowerCase().includes('male') && vocal.toLowerCase().includes('female') ? `
+  - PENTING (ATURAN DUET SALING MENJAWAB / BERSAHUTAN): Karena vokal yang dipilih mencakup Male DAN Female secara bersamaan, lirik yang dihasilkan WAJIB dijadikan DUET di mana kedua penyanyi saling menjawab satu sama lain (interaktif bagaikan dialog romantis/dramatis yang mengalir indah):
+    1. Berikan label penyanyi/vokal yang jelas di awal baris atau bait menggunakan tanda kurung siku, misalnya: [Male Vocal], [Female Vocal], atau [Duet] (saat mereka bernyanyi bersama).
+    2. Buatlah struktur lirik di mana bait atau baris yang dinyanyikan Male dijawab dengan harmonis oleh Female, atau sebaliknya, sehingga membentuk percakapan puitis yang alami, lugas, jelas, dan dinamis.
+    3. Aliran dialog ini harus terintegrasi secara puitis, jujur, manis, sopan, dan berbobot rasa mendalam sesuai jiwa lagu asli.` : ''}
+  1. GAYA SANGAT PUITIS, BERNYAWA, DAN MENGALIR INDAH (HUMAN-LIKE LYRICS): Rangkailah bait-bait lirik yang puitis namun sederhana, mengalir sangat luwes secara alami, jelas, lugas, mudah diterima dan dipahami oleh semua kalangan, sopan, serta bernyawa kuat seolah-olah murni ditulis oleh pencipta lagu/sastrawan manusia sungguhan yang legendaris (bukan teks kaku robotik/AI).
+  2. CONTOH STANDARD ALIRAN LIRIK YANG SANGAT INDAH, ALAMI, DAN DISUKAI AUDIENS (JADIKAN INI ACUAN KHUSUS):
+     "Biarkan saja orang berkata,
+     Hubungan kita berdua
+     Tidak mungkin lama,
+     Biarkan saja orang mengira,
+     Cinta kasih sayang kita,
+     Hanya sementara,
+     Aku bersumpah demi Tuhan yang kuasa,
+     Ku akan mencintamu selamanya,
+     Aku berjanji sampai lepas nyawa ini,
+     Aku hanya milikmu seutuhnya..."
+  3. HAPUS KEKAKUAN AI (ANTI-AI CLICHES): JANGAN PERNAH memakai kata-kata yang terlalu kaku, lebay, atau dipaksakan (hindari metafora berat buatan AI seperti "menyulam kasih", "tiang doa", "istana dalam harapan", "lemparkan senyum", "badai kenyataan merubuhkan", "melangkah pasti", "gapai mimpi di angkasa", dll yang membuat kalimat terdengar aneh dan tidak enak dinyanyikan). Gunakan bahasa sehari-hari yang dikemas penuh jiwa, tulus, manis, sopan, dan jujur.
+  4. EMOSI YANG SANGAT HIDUP DAN NYATA (DEEP EMOTIONAL RESONANCE):
+     - Jika nuansa lagu SEDIH / PILU / LUKA / SEPI / KERINDUAN: Rangkailah bahasa yang menusuk sampai ke tulang, sangat pilu, bernyawa duka, dan menyayat hati, namun tetap diredam dengan kesopanan tata krama bahasa yang indah. Pendengar harus bisa langsung merasakan "sesak di dada", "kehampaan", "tangisan batin yang tertahan", dan "kerinduan yang membakar sepi". Jadikan liriknya benar-benar terasa nyata, mengalir, indah, dan menguras air mata dengan cara yang elegan.
+     - Jika nuansa lagu BAHAGIA / OPTIMIS / SUKACITA / HARAPAN: Rangkailah bahasa yang hangat, membebaskan pikiran, riang gembira secara jujur tanpa kepura-puraan. Gunakan pilihan kata puitis nan anggun yang membuat pendengar ikut tersenyum lebar, merasakan jantung mereka berdebar gembira, dan menangkap pancaran kehangatan cinta/harapan sejati.
+     - Jika nuansa lainnya (marah, misterius, kontemplatif): Sesuaikan pilihan kata agar getaran frekuensi suasana hati tersebut langsung merambat ke jiwa pendengar secara dramatis namun tetap disajikan lewat estetika bahasa yang sopan dan berkelas tinggi.
+  5. PRINSIP KESOPANAN & KEBERNYAWAAN (SOPAN & BERNYAWA): Bahasa yang digunakan harus mencerminkan rasa hormat yang mendalam terhadap sastra dan seni. Jalinan kata harus dirajut penuh kesantunan, berwibawa, anggun, dan bernyawa luhur (bebas dari umpatan, diksi jalanan yang vulgar, atau kalimat murahan).
+  6. Ambil esensi makna, emosi, dan pesan mendalam dari "Hasil Analisis Makna" (deskripsi), lalu ubah menjadi bait-bait lirik baru yang SANGAT MENJIWAI ${songwriter}.
+  7. Gunakan gaya bahasa khas, diksi asli yang mengalir indah, rima merdu, dan estetika penulisan kalimat yang SANGAT SPESIFIK dari pencipta lagu ${songwriter} serta selaraskan dengan vibes dari genre ${genre} yang dipilih.
+  8. KELUWESAN & KESELARASAN METRIK (SINGABLE & RHYTHMICAL - BEBAS KEKAKUAN):
+     - JANGAN MEMAKSAKAN JUMLAH KATA YANG KAKU PER BARIS karena itu merusak keindahan lirik dan membuat kalimat terdengar aneh/dipaksakan.
+     - Fokuskan pada KELUWESAN phrasing (nada pengucapan), rima akhir yang berdentang indah, jumlah suku kata (syllable length) yang terasa seimbang dengan lirik asli, dan alur vokal yang empuk serta alami saat dinyanyikan (highly singable).
+     - Struktur bait, urutan Verse/Chorus/Bridge, dan penempatan Reff harus tetap harmonis mengalir seirama dengan lirik asli.
+  9. Perhatikan struktur lagu khas mereka (seperti penempatan Chorus penentu atau Bridge klimaks yang emosional).
+  10. MAKSUD DAN INTI PESAN LIRIK SEPERTI YANG DIJELASKAN DI HASIL ANALISIS MAKNA (DESKRIPSI) HARUS TETAP SAMA DENGAN ASLINYA, namun dibungkus secara segar, kreatif, mengalir, dan berdaya puitis tinggi SESUAI BAHASA DAN KARAKTER KUAT ${songwriter}.
+  11. INSTRUKSI MUSIK PER BAGIAN: Pada setiap label struktur lirik (seperti [Verse], [Chorus], [Bridge], dll), tambahkan instruksi musik di dalam kurung tepat di samping label tersebut. Instruksi harus mencakup: alat musik apa yang dominan, moods-nya bagaimana, karakter vocals-nya seperti apa, dan temponya bagaimana. Contoh: [Chorus (Gitar distorsi melengking, mood sangat emosional, vokal high-pitched, tempo stabil dramatis)].
 
-  Panduan Khusus Tokoh (WAJIB DIIKUTI):
-  - Jika Ahmad Dhani: Gunakan diksi filosofis, puitis, metafora cerdas, nuansa rock-intelek yang megah.
-  - Jika Rhoma Irama: Gunakan sarkasme halus, pesan moral/dakwah, lugas namun berwibawa dan maskulin.
-  - Jika Opick: Gunakan bahasa religi, spiritual, kontemplasi kehidupan, pilihan kata menyejukkan.
-  - Jika Dody Kangen Band: Gunakan bahasa sederhana, sangat relate dengan kisah cinta rakyat jelata, pop melayu yang lugu.
-  - Jika Melly Goeslaw: Gunakan bahasa imajinatif, metafora unik/tidak biasa, emosi meledak-ledak.
-  - Jika Ariel NOAH: Gunakan bahasa puitis, metafora alam (hujan, angin, mimpi), kata-kata yang mengalir dinamis.
-  - Jika Eros Candra: Gunakan bahasa lugas, bercerita (storytelling), kata-kata anak muda yang jujur dan apa adanya.
-  - Jika Tulus: Gunakan bahasa elegan, diksi rapi, modern, minimalis namun bermakna dalam dan puitis modern.
-  - Jika Youngky RM/Cecep AS/Deddy Dores: Gunakan gaya Pop-Rock/Slow-Rock melankolis era 80/90-an yang sangat dramatis dan menyayat hati.
-  - Jika Pance Pondaag: Gunakan diksi lembut, manis, sederhana, pop nostalgia yang romantis.
-  - Jika Saari Amri: Gunakan gaya Slow-Rock melankolis era 80/90-an yang sangat dramatis dan menyayat hati, melayu kental, puitis mendayu, kiasan kerinduan yang dalam.
-  - Jika Teddy Riady: Gunakan kalimat kuat, berkarakter, cinta dewasa yang realistis.
+  Panduan Khusus Tokoh (WAJIB DIIKUTI DENGAN DIKSI PUITIS, BERNYAWA, DAN SOPAN):
+  - Jika Ahmad Dhani: Gunakan diksi filosofis, puitis, metafora cerdas yang megah, nuansa rock-intelek yang berbobot sastra tinggi, sopan, agung, dan bermartabat.
+  - Jika Rhoma Irama: Gunakan pesan moral/dakwah yang sarat kebaikan, lugas namun berwibawa tinggi, bertutur sangat sopan, mendalam, puitis berbalut nasehat yang bersahaja, dan maskulin sejati.
+  - Jika Opick: Gunakan bahasa religi dan spiritual yang bernapas keindahan ketakwaan, kontemplasi kehidupan fana, kata-kata yang menyejukkan hati, puitis syahdu, serta teramat sopan, ramah, dan menenangkan jiwa.
+  - Jika Dody Kangen Band: Gunakan bahasa yang sederhana, sangat tulus, puitis dalam kepolosan rasa, bersahaja, sopan kental melayu romantis, serta mudah dipahami rakyat jelata namun berbobot rasa yang jujur dan menyentuh.
+  - Jika Melly Goeslaw: Gunakan bahasa imajinatif, metafora unik/tidak biasa yang meletupkan rasa cinta agung, emosi mendalam namun luhur, puitis eksentrik yang memesona, tetap sopan, serta bernyawa kuat.
+  - Jika Ariel NOAH: Gunakan bahasa puitis yang lembut mengalir bagai air, penuh analogi dan metafora keindahan alam (hujan, angin, mimpi, bintang, waktu, hening), kata-kata kontemplatif yang dinamis, bersahabat, tulus, dan sopan.
+  - Jika Eros Candra: Gunakan bahasa lugas bercerita (storytelling), kata-kata yang jujur, santun, hangat, puitis realitas sehari-hari yang bernyawa akrab, bersahaja, dan mudah dipahami semua kalangan.
+  - Jika Tulus: Gunakan bahasa elegan, diksi yang sangat rapi-bersih, modern-minimalis namun bernyawa dalam, puitis kekinian yang sopan bertata krama tinggi dan menenangkan kalbu. (Ingat: JANGAN PERNAH sebut kata "tulus" di bagian Deskripsi Style Musik/tags, gunakan padanan kata seperti "murni", "ikhlas", "jujur"!).
+  - Jika Youngky RM/Cecep AS/Deddy Dores: Gunakan gaya Pop-Rock/Slow-Rock melankolis era 80/90-an yang teramat dramatis, pilu menyayat duka lara yang sarat kerinduan puitis yang sopan, bernyawa megah, dan menyentuh sisi duka terdalam manusia.
+  - Jika Pance Pondaag: Gunakan diksi lembut, manis, puitis sederhana, bernyawa romantis pop nostalgia yang sangat hangat, ramah, dan sopan dalam mengekspresikan asmara.
+  - Jika Saari Amri: Gunakan gaya Slow-Rock melankolis era 80/90-an yang sangat dramatis dan menyayat hati, melayu kental yang puitis mendayu-dayu penuh cengkok, kiasan kerinduan yang dalam, sopan bersahaja, dan penuh kepedihan yang bernyawa duka indah.
+  - Jika Teddy Riady: Gunakan kalimat kuat, berkarakter, cinta dewasa yang realistis, namun tetap tersampaikan lewat balutan diksi puitis yang sopan, tegap, dan bersahaja.
 
   Lirik Asli:
   ${originalLyrics}
@@ -182,9 +224,19 @@ export async function generateNewLyrics(
     }
     
     // Programmatic filter to sanitize any accidental occurrences of forbidden terms to bypass filters
-    const cleanWord = (text: string) => {
+    const cleanWord = (text: string, isMusicStyle: boolean = false) => {
       if (!text) return "";
-      let cleaned = text.replace(/irama/gi, (match) => {
+      let cleaned = text;
+      
+      if (isMusicStyle) {
+        cleaned = cleaned.replace(/tulus/gi, (match) => {
+          if (match === "TULUS") return "JUJUR";
+          if (match === "Tulus") return "Jujur";
+          return "jujur";
+        });
+      }
+
+      cleaned = cleaned.replace(/irama/gi, (match) => {
         if (match === "IRAMA") return "RITME";
         if (match === "Irama") return "Ritme";
         return "ritme";
@@ -203,7 +255,7 @@ export async function generateNewLyrics(
     return {
       title: cleanWord(result.title),
       lyrics: cleanWord(result.lyrics),
-      musicStyle: cleanWord(result.musicStyle)
+      musicStyle: cleanWord(result.musicStyle, true)
     };
   } catch (error) {
     console.error("Error generating new lyrics:", error);
