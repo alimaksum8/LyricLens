@@ -78,7 +78,8 @@ export async function generateNewLyrics(
   vocal: string = "Male",
   tempo: string = "80-100 BPM",
   introOpening: string = "",
-  instruments: string = ""
+  instruments: string = "",
+  isDuet: boolean = false
 ): Promise<{ title: string; lyrics: string; musicStyle: string }> {
   if (!originalLyrics.trim()) {
     throw new Error("Lirik asli tidak ditemukan.");
@@ -87,13 +88,14 @@ export async function generateNewLyrics(
   const prompt = `Berdasarkan lirik asli dan analisis berikut, buatlah sebuah JUDUL, lirik lagu BARU, dan DESKRIPSI STYLE MUSIK yang secara mendalam MENJIWAI dan MENGAMBIL RUH artistik dari pencipta lagu Indonesia: ${songwriter}. 
 
   Tugas Utama Anda:
-  1. EMBODY THE SOUL: Anda harus benar-benar "menjadi" ${songwriter}. Gunakan "DNA" musik mereka, cara mereka memilih kata, dan cara mereka membangun emosi.
+  1. EMBODY THE SOUL: Anda harus benar-benar "menjadi" ${songwriter}. Gunakan "DNA" musik mereka, pilihan diksi puitis mereka, cara mereka merangkai kata dan emosi, struktur lagu khas mereka, hingga gaya aransemen musik instrumen yang mereka sukai. Seluruh lirik, bahasa deskripsi, struktur bait, dan gaya musik wajib berciri khas penciptanya sehingga bila dihasilkan di generator musik (seperti Suno, Yolli AI, Udio, dsb) akan memancarkan kentalnya aroma musik ciptaan ${songwriter}!
   2. Karakteristik Musik Terpilih:
      - Genre: ${genre}
-     - Karakter Vokal: ${vocal}
+     - Karakter Vokal: ${isDuet ? "Duet (Male and Female)" : vocal}
      - Tempo: ${tempo}
      - Instrumen Utama: ${instruments || "Standar sesuai genre"}
      - Intro/Opening: ${introOpening || "Standar sesuai genre"}
+     - Mode Penyanyi: ${isDuet ? "Duet (Male & Female, saling menjawab secara seru/romantis/dramatis)" : "Solo (Lirik dirancang khusus untuk satu penyanyi saja)"}
 
   Target Durasi Lagu: ${duration}.
   PENTING: Aturlah panjang lirik agar pas dengan durasi ${duration} tersebut. Jika durasi cukup panjang (seperti 8-10 menit), Anda BOLEH menambahkan pengulangan Reff/Chorus (misal: [Chorus 2x]), menambahkan Bridge yang lebih panjang, atau menambahkan bagian [Interlude/Solo Instrument Representation] jika dirasa perlu untuk menambah estetika aliran lagu.
@@ -101,14 +103,14 @@ export async function generateNewLyrics(
   Karakteristik Aliran Musik Dalam Jiwa ${songwriter}:
   - SESUAIKAN GAYA: Meskipun genre-nya ${genre}, aransemennya harus memiliki "sentuhan" khas ${songwriter}. 
   - Pastikan diksi dan pemilihan kata mendukung nuansa ${genre}.
-  - Sesuaikan gaya penulisan agar cocok dengan karakter vokal ${vocal} (misal: jika 'Bernafas' atau 'Sedih' dipilih, gunakan kalimat yang lebih emosional dan memberi ruang jeda nafas; jika 'Mendayu khas slowrock malaysia' dipilih, sesuaikan lirik agar mendayu-dayu kental dengan kiasan kerinduan, kepedihan mendalam, rima puitis khas melayu slow-rock 90-an, dan memberi ruang bagi vokal meliuk melengking panjang dengan cengkok yang kuat).
+  - Sesuaikan gaya penulisan agar cocok dengan karakter vokal ${isDuet ? "Duet (Male and Female)" : vocal} (misal: jika 'Bernafas' atau 'Sedih' dipilih, gunakan kalimat yang lebih emosional dan memberi ruang jeda nafas; jika 'Mendayu khas slowrock malaysia' dipilih, sesuaikan lirik agar mendayu-dayu kental dengan kiasan kerinduan, kepedihan mendalam, rima puitis khas melayu slow-rock 90-an, dan memberi ruang bagi vokal meliuk melengking panjang dengan cengkok yang kuat).
   - Tempo ${tempo} harus mempengaruhi ritme kata; tempo lambat membutuhkan kata-kata yang lebih panjang/dalam, sementara tempo cepat membutuhkan rima yang lebih dinamis.
   - Jika ada pilihan Instrumen (${instruments}), berikan penekanan pada instrumen tersebut dalam aransemen.
   - Jika ada pilihan Intro/Opening (${introOpening}), sertakan deskripsi awal dalam musik style atau arahkan penulisan lirik pembuka untuk menyesuaikan dengan ambience tersebut.
 
   Deskripsi Style Musik:
-  - Berikan panduan aransemen musik yang detail meliputi instrumen utama, mood, dan cara membawakan lagu ini agar BENAR-BENAR MEREPRESENTASI JIWA ${songwriter} dalam parameter yang dipilih (${genre}, ${vocal}, ${tempo}, ${instruments}, ${introOpening}).
-  - MENERAPKAN PARAMETER SECARA PENUH DAN AKURAT: Deskripsi gaya musik yang dihasilkan wajib disesuaikan secara presisi, nyata, dan harmonis dengan genre '${genre}', moods (suasana perasaan hati), vokal '${vocal}', tempo '${tempo}', instrumen '${instruments}', dan intro '${introOpening}' terpilih.
+  - Berikan panduan aransemen musik yang detail meliputi instrumen utama, mood, dan cara membawakan lagu ini agar BENAR-BENAR MEREPRESENTASI JIWA ${songwriter} dalam parameter yang dipilih (${genre}, ${isDuet ? "Male and Female Duet" : vocal}, ${tempo}, ${instruments}, ${introOpening}).
+  - MENERAPKAN PARAMETER SECARA PENUH DAN AKURAT: Deskripsi gaya musik yang dihasilkan wajib disesuaikan secara presisi, nyata, dan harmonis dengan genre '${genre}', moods (suasana perasaan hati), vokal '${isDuet ? "Male & Female Duet" : vocal}', tempo '${tempo}', instrumen '${instruments}', dan intro '${introOpening}' terpilih.
   - PENTING UNTUK NOSTALGIA SLOW ROCK MALAYSIA 90-AN: Jika genre mengandung "Slowrock" atau instrumental menggunakan "Slowrock Malaysia", deskripsi gaya musik HARUS dengan kuat menggambarkan karakteristik Slow Rock Malaysia era 90-an yang legendaris:
     1. Vokal bernada tinggi melengking emosional ("soaring high-pitched male, emotional high register chest voice vocal", "highly dramatic vocal belts with rich vibrato" atau versi female yang melengking sedu/ratapan emosional).
     2. Aransemen instrumen utama WAJIB menggunakan: Gitar Elektrik distorsi yang melengking sangat panjang, melodius, meratap dramatis (melodic screaming wailing electric guitar solo), Gitar Bass yang tebal mendukung harmonisasi, Drum dengan beat slow-rock yang mantap, dan Keyboard sebagai pengiring suasana atmosferik.
@@ -120,14 +122,14 @@ export async function generateNewLyrics(
   - PENTING SANGAT KRITIS: JANGAN PERNAH menggunakan kata "irama" (baik huruf kecil, besar, atau campuran, seperti "irama", "Irama", "IRAMA") di bagian deskripsi musik 'musicStyle' maupun tags. Gantikan kata tersebut selalu dengan kata lain seperti "ritme", "alunan", "tempo", "melodi", atau "beat". Suno/Udio menyensor kata "irama" karena dianggap merujuk ke artis "Rhoma Irama".
   - PENTING SANGAT KRITIS: JANGAN PERNAH menggunakan kata "cinematic", "string pads", "melancholic", "melankolis", or "strings pads" di bagian deskripsi musik maupun tags. Guanakan deskripsi suasana teknis lainnya.
   - PENTING: JANGAN PERNAH memasukkan kata "koplo", "dangdut", "kendang", "tabla", "percussive", "upbeat", atau unsur musik dangdut/melayu modern yang berlebihan jika genre yang dipilih adalah Slowrock. Hasil harus murni rock ballad/slow rock.
-  - PENTING: Jika vokal '${vocal}' mengandung kata 'Male' or 'Female', wajib mencantumkan identitas vokal tersebut (Male Vocal/Female Vocal) secara menyatu dalam narasi di baris pertama deskripsi. JANGAN gunakan kalimat pembuka kaku seperti "Lagu ini dibawakan oleh...". Gunakan gaya bahasa yang lebih puitis atau deskriptif langsung, contoh: "Suara seorang Female Vocal dengan karakter..." atau "Hadir dengan vokal Male yang..." agar mesin musik AI (seperti Suno/Udio) tetap bisa mengenali gender penyanyi dengan benar.
+  - PENTING: Jika vokal '${isDuet ? "Male and Female Duet" : vocal}' mengandung kata 'Male' or 'Female', wajib mencantumkan identitas vokal tersebut (Male Vocal/Female Vocal) secara menyatu dalam narasi di baris pertama deskripsi. JANGAN gunakan kalimat pembuka kaku seperti "Lagu ini dibawakan oleh...". Gunakan gaya bahasa yang lebih puitis atau deskriptif langsung, contoh: "Suara seorang Female Vocal dengan karakter..." atau "Hadir dengan vokal Male yang..." agar mesin musik AI (seperti Suno/Udio/Yolli AI) tetap bisa mengenali gender penyanyi dengan benar.
   - VOKAL MENDAYU KHAS SLOWROCK MALAYSIA: Jika vokal '${vocal}' mengandung 'Mendayu khas slowrock malaysia', deskripsi aransemen HARUS menggambarkan vokal bernada tinggi yang melengking sedu, penuh cengkok khas yang meratap duka mendalam ("heart-wrenching emotional high register voice, authentic 90s malay slow-rock vocal ornaments, dramatic wailing vibrato, soulful sorrowful delivery").
   - Sertakan bagaimana bagian Intro (${introOpening}) dan Instrumen (${instruments}) dimainkan secara detail.
   - PENTING: Jangan gunakan awalan kalimat seperti "Aransemen khas..." atau "Gaya musik...". Langsung saja jelaskan karakteristik musik secara naratif dan menyatu tanpa menyebut nama tokoh.
   - FORMAT DESKRIPSI WAJIB:
     Tulis deskripsi dalam 2 bagian dalam satu teks gabungan:
     1. Di paragraf pertama, berikan narasi puitis-teknis dalam bahasa Indonesia (maksimal 450 karakter).
-    2. Di baris baru setelah paragraf tersebut, tambahkan kumpulan kata kunci/tag bahasa Inggris yang diapit dalam tanda kurung kuadrat agar dapat langsung dicopy-paste pengguna ke kolom model musik seperti Suno/Udio, misalnya: '[Suno/Udio Tags: 90s malay slow rock, malaysian slow rock ballad, soaring high-pitched emotional male vocal, wailing melodic electric guitar, analog production style, 75 bpm]'
+    2. Di baris baru setelah paragraf tersebut, tambahkan kumpulan kata kunci/tag bahasa Inggris yang diapit dalam tanda kurung kuadrat agar dapat langsung dicopy-paste pengguna ke kolom model musik seperti Suno/Udio/Yolli AI, misalnya: '[Suno/Udio Tags: 90s malay slow rock, malaysian slow rock ballad, soaring high-pitched emotional male vocal, wailing melodic electric guitar, analog production style, 75 bpm]'
   - PENTING: Maksimal keseluruhan deskripsi (termasuk tag) adalah 980 karakter.
 
   Karakteristik Judul:
@@ -136,11 +138,12 @@ export async function generateNewLyrics(
   3. Terasa global dan bisa diterima oleh semua kalangan (anak-anak, muda-mudi, dewasa, rakyat kecil, elit politik, hingga akademis).
 
   Karakteristik Lirik (WAJIB BEBAS DARI KEKAKUAN AI, SANGAT PUITIS, MENGALIR ALAMI, DAN SOPAN):
-  ${vocal.toLowerCase().includes('male') && vocal.toLowerCase().includes('female') ? `
-  - PENTING (ATURAN DUET SALING MENJAWAB / BERSAHUTAN): Karena vokal yang dipilih mencakup Male DAN Female secara bersamaan, lirik yang dihasilkan WAJIB dijadikan DUET di mana kedua penyanyi saling menjawab satu sama lain (interaktif bagaikan dialog romantis/dramatis yang mengalir indah):
+  ${isDuet ? `
+  - PENTING (ATURAN DUET SALING MENJAWAB / BERSAHUTAN - PERCAKAPAN DINAMIS): Karena mode duet diaktifkan, lirik yang dihasilkan WAJIB dijadikan DUET Male DAN Female yang interaktif, saling menjawab (bersahutan/dialog romantis/dramatis yang mengalir indah):
     1. Berikan label penyanyi/vokal yang jelas di awal baris atau bait menggunakan tanda kurung siku, misalnya: [Male Vocal], [Female Vocal], atau [Duet] (saat mereka bernyanyi bersama).
-    2. Buatlah struktur lirik di mana bait atau baris yang dinyanyikan Male dijawab dengan harmonis oleh Female, atau sebaliknya, sehingga membentuk percakapan puitis yang alami, lugas, jelas, dan dinamis.
-    3. Aliran dialog ini harus terintegrasi secara puitis, jujur, manis, sopan, dan berbobot rasa mendalam sesuai jiwa lagu asli.` : ''}
+    2. Struktur lirik harus diatur sedemikian rupa sehingga bait atau baris yang dinyanyikan Male dijawab dengan harmonis oleh Female, atau sebaliknya, membentuk percakapan puitis yang alami, lugas, jelas, dan dinamis.
+    3. Aliran dialog ini harus terintegrasi secara puitis, jujur, manis, sopan, dan berbobot rasa mendalam sesuai jiwa lagu asli.` : `
+  - PENTING (ATURAN SOLO): Karena mode duet DINONAKTIFKAN, lirik yang dihasilkan WAJIB murni untuk penyanyi SOLO (hanya satu orang penyanyi, baik Male saja atau Female saja sesuai karakter vokal yang dipilih). JANGAN menambahkan label [Male Vocal] atau [Female Vocal] di dalam lirik. Lirik harus dirancang khusus untuk dibawakan secara solo secara utuh, jujur, manis, sopan, meresap jiwa oleh satu penyanyi.`}
   1. GAYA SANGAT PUITIS, BERNYAWA, DAN MENGALIR INDAH (HUMAN-LIKE LYRICS): Rangkailah bait-bait lirik yang puitis namun sederhana, mengalir sangat luwes secara alami, jelas, lugas, mudah diterima dan dipahami oleh semua kalangan, sopan, serta bernyawa kuat seolah-olah murni ditulis oleh pencipta lagu/sastrawan manusia sungguhan yang legendaris (bukan teks kaku robotik/AI).
   2. CONTOH STANDARD ALIRAN LIRIK YANG SANGAT INDAH, ALAMI, DAN DISUKAI AUDIENS (JADIKAN INI ACUAN KHUSUS):
      "Biarkan saja orang berkata,

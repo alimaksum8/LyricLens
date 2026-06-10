@@ -66,6 +66,7 @@ export default function App() {
   const [copiedTitle, setCopiedTitle] = useState(false);
   const [copiedLyrics, setCopiedLyrics] = useState(false);
   const [copiedStyle, setCopiedStyle] = useState(false);
+  const [isDuet, setIsDuet] = useState(false);
 
   const toggleSelection = (list: string[], setList: (l: string[]) => void, item: string) => {
     if (list.includes(item)) {
@@ -113,10 +114,11 @@ export default function App() {
         selectedModel,
         selectedDuration,
         selectedGenres.join(', '),
-        selectedVocals.join(', '),
+        isDuet ? 'Male and Female Duet' : selectedVocals.join(', '),
         selectedTempos.join(', '),
         selectedIntros.join(', '),
-        selectedInstruments.join(', ')
+        selectedInstruments.join(', '),
+        isDuet
       );
       setNewTitle(title);
       setNewLyrics(generatedLyrics);
@@ -236,6 +238,56 @@ export default function App() {
               value={lyrics}
               onChange={(e) => setLyrics(e.target.value)}
             />
+
+            {/* Duet Toggle Button Section */}
+            <div className="pt-2 border-t border-white/5 space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="text-[11px] font-bold uppercase tracking-widest text-white/50 flex items-center gap-1.5">
+                  <span className={`inline-block w-2 h-2 rounded-full ${isDuet ? 'bg-orange-500 animate-pulse' : 'bg-white/20'}`}></span> Mode Vokal Lagu
+                </label>
+                <span className="text-[10px] text-white/40 italic">Saling menjawab atau solo</span>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-2 bg-white/5 p-1 rounded-xl border border-white/10">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsDuet(false);
+                    if (selectedVocals.includes("Male") && selectedVocals.includes("Female")) {
+                      setSelectedVocals(["Male"]);
+                    }
+                  }}
+                  className={`py-2 px-3 text-xs rounded-lg transition-all duration-200 font-medium ${
+                    !isDuet
+                      ? 'bg-white/10 text-white shadow-sm border border-white/10'
+                      : 'text-white/40 hover:text-white/80'
+                  }`}
+                >
+                  Solo (Satu Vokal saja)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsDuet(true);
+                    if (!selectedVocals.includes("Male") || !selectedVocals.includes("Female")) {
+                      setSelectedVocals(["Male", "Female"]);
+                    }
+                  }}
+                  className={`py-2 px-3 text-xs rounded-lg transition-all duration-200 font-medium flex items-center justify-center gap-1.5 ${
+                    isDuet
+                      ? 'bg-[#ff4e00] text-white shadow-lg shadow-[#ff4e00]/20'
+                      : 'text-white/40 hover:text-white/80'
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5" /> Duet (Male & Female)
+                </button>
+              </div>
+              {isDuet && (
+                <div className="text-[10px] text-orange-400 bg-orange-500/10 border border-orange-500/20 rounded-lg p-2 leading-relaxed">
+                  <strong>Mode Duet Aktif!</strong> Lirik baru akan berstruktur dialog interaktif saling bersahutan antara [Male Vocal] dan [Female Vocal].
+                </div>
+              )}
+            </div>
 
             <div className="space-y-3 pt-2 border-t border-white/5">
               <div className="flex items-center justify-between">
@@ -414,7 +466,10 @@ export default function App() {
 
                           {/* Vocals Select */}
                           <div className="flex flex-col gap-2">
-                            <span className="text-[10px] text-white/20 uppercase tracking-tighter">Vocals:</span>
+                            <div className="flex items-center justify-between">
+                              <span className="text-[10px] text-white/20 uppercase tracking-tighter">Vocals:</span>
+                              {isDuet && <span className="text-[10px] text-[#ff4e00] font-bold animate-pulse">MODE DUET AKTIF (Male & Female)</span>}
+                            </div>
                             <div className="flex flex-wrap gap-2">
                               {VOCALS.map((vocal) => (
                                 <button
@@ -463,9 +518,9 @@ export default function App() {
                     >
                       <div className="flex items-center gap-2">
                         <PenTool className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                        <span className="font-bold">Jadikan Lirik Baru</span>
+                        <span className="font-bold">{isDuet ? "Jadikan Lirik Duet Baru" : "Jadikan Lirik Solo Baru"}</span>
                       </div>
-                      <span className="text-[10px] opacity-70">Gaya {selectedSongwriter} • {selectedGenres.join('/')} • {selectedDuration}</span>
+                      <span className="text-[10px] opacity-70">Gaya {selectedSongwriter} • {isDuet ? "Duet (Male/Female)" : "Solo"} • {selectedGenres.join('/')} • {selectedDuration}</span>
                     </motion.button>
 
                     <div className="mt-6 flex flex-col gap-2 pt-4 border-t border-white/5">
@@ -549,7 +604,7 @@ export default function App() {
                         {selectedInstruments.length > 0 && (
                           <span className="bg-white/5 px-2 py-0.5 rounded">Instruments: {selectedInstruments.join(', ')}</span>
                         )}
-                        <span className="bg-white/5 px-2 py-0.5 rounded">Vocals: {selectedVocals.join(', ')}</span>
+                        <span className="bg-white/5 px-2 py-0.5 rounded">Vocals: {isDuet ? 'Male & Female Duet' : selectedVocals.join(', ')}</span>
                         <span className="bg-white/5 px-2 py-0.5 rounded">Tempo: {selectedTempos.join(', ')}</span>
                         {selectedIntros.length > 0 && (
                           <span className="bg-white/5 px-2 py-0.5 rounded">Intro: {selectedIntros.join(', ')}</span>
