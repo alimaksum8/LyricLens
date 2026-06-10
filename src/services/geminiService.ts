@@ -108,7 +108,14 @@ export async function generateNewLyrics(
   - Jika ada pilihan Instrumen (${instruments}), berikan penekanan pada instrumen tersebut dalam aransemen.
   - Jika ada pilihan Intro/Opening (${introOpening}), sertakan deskripsi awal dalam musik style atau arahkan penulisan lirik pembuka untuk menyesuaikan dengan ambience tersebut.
 
-  Deskripsi Style Musik:
+  Deskripsi Style Musik (Wajib Mengacu Secara Akurat Pada Seluruh Pilihan Parameter Terpilih):
+  - SANGAT PENTING: Deskripsi style musik harus secara nyata menyertakan, mencerminkan, dan mengintegrasikan seluruh parameter pilihan pengguna secara selaras berikut:
+    1. Genre: '${genre}' (Deskripsikan aransemen yang merepresentasikan genre ini dengan balutan roh khas ${songwriter}).
+    2. Intro Opening: '${introOpening || "Standar sesuai tempo"}' (Gambarkan suasana pembuka lagu wajib sejalan dengan pilihan ini).
+    3. Instruments: '${instruments || "Standar instrumen pendukung"}' (Sebutkan alat-alat musik ini secara eksplisit dimainkan dalam deskripsi).
+    4. Vocals: '${isDuet ? "Duet (Male & Female)" : vocal}' (Cantumkan karakter vokal ini, khususnya vokal/duet secara mendalam di baris pertama deskripsi).
+    5. Tempo: '${tempo}' (Gambarkan kecepatan ritme drum dan alunan lagu yang sesuai dengan tempo ini).
+    6. Target Durasi Lagu: '${duration}' (Atur alur deskripsi lagu—intro, verse, reff memuncak, bridge solo instrumen, hingga outro penutup—yang masuk akal untuk mencakup durasi ini).
   - Berikan panduan aransemen musik yang detail meliputi instrumen utama, mood, dan cara membawakan lagu ini agar BENAR-BENAR MEREPRESENTASI JIWA ${songwriter} dalam parameter yang dipilih (${genre}, ${isDuet ? "Male and Female Duet" : vocal}, ${tempo}, ${instruments}, ${introOpening}).
   - MENERAPKAN PARAMETER SECARA PENUH DAN AKURAT: Deskripsi gaya musik yang dihasilkan wajib disesuaikan secara presisi, nyata, dan harmonis dengan genre '${genre}', moods (suasana perasaan hati), vokal '${isDuet ? "Male & Female Duet" : vocal}', tempo '${tempo}', instrumen '${instruments}', dan intro '${introOpening}' terpilih.
   - PENTING UNTUK NOSTALGIA SLOW ROCK MALAYSIA 90-AN: Jika genre mengandung "Slowrock" atau instrumental menggunakan "Slowrock Malaysia", deskripsi gaya musik HARUS dengan kuat menggambarkan karakteristik Slow Rock Malaysia era 90-an yang legendaris:
@@ -121,6 +128,7 @@ export async function generateNewLyrics(
   - PENTING SANGAT KRITIS: JANGAN PERNAH menyebutkan kata "tulus" (baik huruf kecil, besar, atau campuran seperti "tulus", "Tulus", "TULUS") di dalam deskripsi style musik 'musicStyle' maupun tags agar tidak terblokir. Ganti dengan kata "penerimaan", "ikhlas", atau "jujur" jika maksudnya adalah ketulusan hati.
   - PENTING SANGAT KRITIS: JANGAN PERNAH menggunakan kata "irama" (baik huruf kecil, besar, atau campuran, seperti "irama", "Irama", "IRAMA") di bagian deskripsi musik 'musicStyle' maupun tags. Gantikan kata tersebut selalu dengan kata lain seperti "ritme", "alunan", "tempo", "melodi", atau "beat". Suno/Udio menyensor kata "irama" karena dianggap merujuk ke artis "Rhoma Irama".
   - PENTING SANGAT KRITIS: JANGAN PERNAH menggunakan kata "cinematic", "string pads", "melancholic", "melankolis", or "strings pads" di bagian deskripsi musik maupun tags. Guanakan deskripsi suasana teknis lainnya.
+  - PENTING SANGAT KRITIS: JANGAN PERNAH menggunakan kata "laki-laki", "laki laki", "cowok", "wanita", "perempuan", "perempian", "cewek", atau "gadis" pada instruksi lirik maupun style musik. Selalu gunakan istilah bahasa Inggris "male" untuk laki-laki/cowok, dan "female" untuk wanita/perempuan/perempian/cewek/gadis.
   - PENTING: JANGAN PERNAH memasukkan kata "koplo", "dangdut", "kendang", "tabla", "percussive", "upbeat", atau unsur musik dangdut/melayu modern yang berlebihan jika genre yang dipilih adalah Slowrock. Hasil harus murni rock ballad/slow rock.
   - PENTING: Jika vokal '${isDuet ? "Male and Female Duet" : vocal}' mengandung kata 'Male' or 'Female', wajib mencantumkan identitas vokal tersebut (Male Vocal/Female Vocal) secara menyatu dalam narasi di baris pertama deskripsi. JANGAN gunakan kalimat pembuka kaku seperti "Lagu ini dibawakan oleh...". Gunakan gaya bahasa yang lebih puitis atau deskriptif langsung, contoh: "Suara seorang Female Vocal dengan karakter..." atau "Hadir dengan vokal Male yang..." agar mesin musik AI (seperti Suno/Udio/Yolli AI) tetap bisa mengenali gender penyanyi dengan benar.
   - VOKAL MENDAYU KHAS SLOWROCK MALAYSIA: Jika vokal '${vocal}' mengandung 'Mendayu khas slowrock malaysia', deskripsi aransemen HARUS menggambarkan vokal bernada tinggi yang melengking sedu, penuh cengkok khas yang meratap duka mendalam ("heart-wrenching emotional high register voice, authentic 90s malay slow-rock vocal ornaments, dramatic wailing vibrato, soulful sorrowful delivery").
@@ -170,7 +178,14 @@ export async function generateNewLyrics(
      - Struktur bait, urutan Verse/Chorus/Bridge, dan penempatan Reff harus tetap harmonis mengalir seirama dengan lirik asli.
   9. Perhatikan struktur lagu khas mereka (seperti penempatan Chorus penentu atau Bridge klimaks yang emosional).
   10. MAKSUD DAN INTI PESAN LIRIK SEPERTI YANG DIJELASKAN DI HASIL ANALISIS MAKNA (DESKRIPSI) HARUS TETAP SAMA DENGAN ASLINYA, namun dibungkus secara segar, kreatif, mengalir, dan berdaya puitis tinggi SESUAI BAHASA DAN KARAKTER KUAT ${songwriter}.
-  11. INSTRUKSI MUSIK PER BAGIAN: Pada setiap label struktur lirik (seperti [Verse], [Chorus], [Bridge], dll), tambahkan instruksi musik di dalam kurung tepat di samping label tersebut. Instruksi harus mencakup: alat musik apa yang dominan, moods-nya bagaimana, karakter vocals-nya seperti apa, dan temponya bagaimana. Contoh: [Chorus (Gitar distorsi melengking, mood sangat emosional, vokal high-pitched, tempo stabil dramatis)].
+  11. INSTRUKSI MUSIK PER BAGIAN (WAJIB SESUAIKAN DENGAN INPUT PARAMETER PILIHAN): Pada setiap label struktur lirik (seperti [Verse], [Chorus], [Bridge], [Outro], dll), tambahkan instruksi musik di dalam tanda kurung di samping label tersebut secara spesifik dan wajib didasarkan secara nyata pada seluruh pilihan parameter pengguna:
+      - Genre: '${genre}'
+      - Intro Opening: '${introOpening || "Sesuai lagu"}'
+      - Instruments: '${instruments || "Sesuai lagu"}'
+      - Vocals: '${isDuet ? "Duet (Male/Female)" : vocal}'
+      - Tempo: '${tempo}'
+      - PENTING SANGAT KRITIS: Dalam menuliskan instruksi vokal di label/instruksi musik per bagian, dilarang keras menggunakan kata "laki-laki", "cowok", "wanita", "perempuan", "perempian", "cewek", atau "gadis". Wajib menggunakan istilah "male" (untuk laki-laki/cowok) dan "female" (untuk wanita/perempuan/perempian/cewek/gadis).
+      Contoh: [Verse (Genre: ${genre}, Vocals: ${isDuet ? "Male/Female Duet Saling Menyanyi" : vocal}, Tempo: ${tempo}, Dominasi: ${instruments || "Gitar/Piano"}${introOpening ? `, Opening: ${introOpening}` : ''}, Mood: Emosional Syahdu)] atau [Chorus (Genre: ${genre}, Vocals: ${isDuet ? "Duet Saling Bersahutan" : vocal}, Tempo: ${tempo}, Instrumen: Aransemen memuncak klimaks dengan ${instruments || "Gitar Elektrik"}, Mood: Dramatis Menyayat)]. JANGAN menggunakan contoh template kaku yang tidak sesuai dengan pilihan di atas. Seluruh label bait lirik harus konsisten memuat parameter terpilih tersebut.
 
   Panduan Khusus Tokoh (WAJIB DIIKUTI DENGAN DIKSI PUITIS, BERNYAWA, DAN SOPAN):
   - Jika Ahmad Dhani: Gunakan diksi filosofis, puitis, metafora cerdas yang megah, nuansa rock-intelek yang berbobot sastra tinggi, sopan, agung, dan bermartabat.
@@ -252,6 +267,17 @@ export async function generateNewLyrics(
         if (match === "LABIRIN") return "LIQU";
         if (match === "Labirin") return "Liku";
         return "liku";
+      });
+      // Force Indonesian gender terms to be replaced with English 'male' and 'female'
+      cleaned = cleaned.replace(/laki(-|\s)?laki|cowok/gi, (match) => {
+        if (match === match.toUpperCase()) return "MALE";
+        if (match[0] === match[0].toUpperCase()) return "Male";
+        return "male";
+      });
+      cleaned = cleaned.replace(/wanita|perempuan|perempian|cewek|gadis/gi, (match) => {
+        if (match === match.toUpperCase()) return "FEMALE";
+        if (match[0] === match[0].toUpperCase()) return "Female";
+        return "female";
       });
       return cleaned;
     };
