@@ -79,13 +79,22 @@ export async function generateNewLyrics(
   tempo: string = "80-100 BPM",
   introOpening: string = "",
   instruments: string = "",
-  isDuet: boolean = false
+  isDuet: boolean = false,
+  referenceSong: string = ""
 ): Promise<{ title: string; lyrics: string; musicStyle: string }> {
   if (!originalLyrics.trim()) {
     throw new Error("Lirik asli tidak ditemukan.");
   }
 
   const prompt = `Berdasarkan lirik asli dan analisis berikut, buatlah sebuah JUDUL, lirik lagu BARU, dan DESKRIPSI STYLE MUSIK yang secara mendalam MENJIWAI dan MENGAMBIL RUH artistik dari pencipta lagu Indonesia: ${songwriter}. 
+
+  ${referenceSong ? `
+  WAJIB MEMATUHI ACUAN STRUKTUR & JUMLAH KATA (REFERENSI LAGU):
+  - Pengguna meminta agar lirik baru dibuat dengan mengikuti acuan lagu: "${referenceSong}".
+  - SANGAT PENTING DAN KRITIS: Anda wajib merekonstruksi bait lirik baru dengan struktur bait yang sama persis, pembagian bagian (seperti [Verse], [Chorus], [Bridge], [Outro], dll) yang identik, serta JUMLAH KATA PER BARIS yang sama persis dengan lagu "${referenceSong}".
+  - Sebagai contoh, jika lagu acuan adalah "Nike Ardilla - Seberkas Sinar" (atau judul lagu lain yang ditulis), hitung dan tiru pola bait, jumlah baris, dan jumlah kata di setiap barisnya agar persis sama dengan lagu tersebut. Lagu baru harus bisa dinyanyikan langsung dan pas dengan ketukan, nada, dan melodi dari lagu acuan "${referenceSong}".
+  - Gaya bahasa, diksi puitis, dan pesan rohaniah/jiwa lagunya tetap disulam secara indah sesuai karakter khas pencipta lagu ${songwriter}.
+  ` : ''}
 
   Tugas Utama Anda:
   1. EMBODY THE SOUL: Anda harus benar-benar "menjadi" ${songwriter}. Gunakan "DNA" musik mereka, pilihan diksi puitis mereka, cara mereka merangkai kata dan emosi, struktur lagu khas mereka, hingga gaya aransemen musik instrumen yang mereka sukai. Seluruh lirik, bahasa deskripsi, struktur bait, dan gaya musik wajib berciri khas penciptanya sehingga bila dihasilkan di generator musik (seperti Suno, Yolli AI, Udio, dsb) akan memancarkan kentalnya aroma musik ciptaan ${songwriter}!
@@ -132,6 +141,9 @@ export async function generateNewLyrics(
   - PENTING: JANGAN PERNAH memasukkan kata "koplo", "dangdut", "kendang", "tabla", "percussive", "upbeat", atau unsur musik dangdut/melayu modern yang berlebihan jika genre yang dipilih adalah Slowrock. Hasil harus murni rock ballad/slow rock.
   - PENTING: Jika vokal '${isDuet ? "Male and Female Duet" : vocal}' mengandung kata 'Male' or 'Female', wajib mencantumkan identitas vokal tersebut (Male Vocal/Female Vocal) secara menyatu dalam narasi di baris pertama deskripsi. JANGAN gunakan kalimat pembuka kaku seperti "Lagu ini dibawakan oleh...". Gunakan gaya bahasa yang lebih puitis atau deskriptif langsung, contoh: "Suara seorang Female Vocal dengan karakter..." atau "Hadir dengan vokal Male yang..." agar mesin musik AI (seperti Suno/Udio/Yolli AI) tetap bisa mengenali gender penyanyi dengan benar.
   - VOKAL MENDAYU KHAS SLOWROCK MALAYSIA: Jika vokal '${vocal}' mengandung 'Mendayu khas slowrock malaysia', deskripsi aransemen HARUS menggambarkan vokal bernada tinggi yang melengking sedu, penuh cengkok khas yang meratap duka mendalam ("heart-wrenching emotional high register voice, authentic 90s malay slow-rock vocal ornaments, dramatic wailing vibrato, soulful sorrowful delivery").
+  - VOCAL LAMBAT MENDAYU DAYU: Jika vokal '${vocal}' mengandung 'Vocal Lambat Mendayu Dayu', deskripsi aransemen wajib melukiskan ketukan vokal yang diperlambat secara dramatis, mengalun lembut mengayun panjang, syahdu dan penuh jeritan batin duka/romantis yang bertahan lama ("slow-tempo vocal delivery, dramatic sluggish emotional singing, lingering melodic lines, highly melancholic slow vocal notes").
+  - SLAPBACK DELAY (GEMA PENDEK KLASIK): Jika vokal '${vocal}' mengandung 'Slapback Delay (Gema Pendek Klasik)', deskripsi wajib menyebutkan adanya efek gema pantulan pendek klasik retro yang tebal pada vokal ("vintage slapback delay on vocals, retro warm vocal echo, 50s-80s short vocal reflection, analog slap-back sound").
+  - SINGLE TAP DELAY (GEMA TUNGGAL): Jika vokal '${vocal}' mengandung 'Single Tap Delay (Gema Tunggal)', deskripsi wajib menjelaskan adanya efek gema tunggal presisi dan bersih secara ritmis yang meluaskan dimensi ruang vokal ("single tap vocal delay, crisp discrete echo, clean rhythmic delay, spacious 1-tap repeat shadow").
   - Sertakan bagaimana bagian Intro (${introOpening}) dan Instrumen (${instruments}) dimainkan secara detail.
   - PENTING: Jangan gunakan awalan kalimat seperti "Aransemen khas..." atau "Gaya musik...". Langsung saja jelaskan karakteristik musik secara naratif dan menyatu tanpa menyebut nama tokoh.
   - FORMAT DESKRIPSI WAJIB:
