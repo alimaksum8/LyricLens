@@ -18,20 +18,7 @@ const DURATIONS = ["5mnt", "6mnt", "7mnt", "8mnt", "9mnt", "10mnt"];
 
 const GENRES = ["Slowrock", "Poprock", "Pop", "Rock", "Pop Akustik", "Rock Akustik", "Orchestra"];
 
-const VOCALS = [
-  "Male", 
-  "Female", 
-  "Bernafas", 
-  "Sedih", 
-  "Serak", 
-  "Bass Dalam", 
-  "Mendayu khas slowrock malaysia", 
-  "Vocals Slowrock", 
-  "Vocals Pop",
-  "Vocal Lambat Mendayu Dayu",
-  "Slapback Delay (Gema Pendek Klasik)",
-  "Single Tap Delay (Gema Tunggal)"
-];
+const VOCALS = ["Male", "Female", "Bernafas", "Sedih", "Serak", "Bass Dalam", "Mendayu khas slowrock malaysia", "Vocals Slowrock", "Vocals Pop"];
 
 const INSTRUMENTS = ["Standard", "Akustik", "Full Band", "Slowrock Malaysia", "Gitar Akustik", "Piano", "Orchestral Strings"];
 
@@ -60,7 +47,6 @@ const INTRO_OPENINGS = [
 
 export default function App() {
   const [lyrics, setLyrics] = useState('');
-  const [referenceSong, setReferenceSong] = useState('');
   const [result, setResult] = useState('');
   const [newLyrics, setNewLyrics] = useState('');
   const [newTitle, setNewTitle] = useState('');
@@ -178,8 +164,7 @@ export default function App() {
         selectedTempos.join(', '),
         selectedIntros.join(', '),
         selectedInstruments.join(', '),
-        !!isDuet,
-        referenceSong
+        !!isDuet
       );
       setNewTitle(title);
       setNewLyrics(generatedLyrics);
@@ -227,7 +212,6 @@ export default function App() {
 
   const clearAll = () => {
     setLyrics('');
-    setReferenceSong('');
     setResult('');
     setNewLyrics('');
     setNewTitle('');
@@ -294,32 +278,12 @@ export default function App() {
               )}
             </div>
             
-             <textarea
-              className="lyric-input h-64"
+            <textarea
+              className="lyric-input h-64 lg:h-72"
               placeholder="Tempelkan lirik lagu di sini..."
               value={lyrics}
               onChange={(e) => setLyrics(e.target.value)}
             />
-
-            {/* Reference Song Title Input */}
-            <div className="space-y-1.5 p-3.5 bg-white/[0.03] border border-white/5 rounded-xl">
-              <div className="flex items-center justify-between">
-                <label className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-white/50 flex items-center gap-1.5">
-                  <Music className="w-3.5 h-3.5 text-[#ff4e00]" /> Referensi Lagu Acuan (Opsional)
-                </label>
-                <span className="text-[9px] text-[#ff4e00]/80 bg-[#ff4e00]/10 px-1.5 py-0.5 rounded-full font-medium">Auto-Struktur</span>
-              </div>
-              <input
-                type="text"
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white placeholder-white/20 focus:outline-none focus:border-[#ff4e00]/50 transition-all duration-200"
-                placeholder="Misal: Nike Ardilla - Seberkas Sinar"
-                value={referenceSong}
-                onChange={(e) => setReferenceSong(e.target.value)}
-              />
-              <p className="text-[9.5px] leading-relaxed text-white/40">
-                Penciptaan lirik baru akan menyamakan <strong>stuktur bait, jumlah baris, dan jumlah kata tiap baris</strong> persis seperti lagu acuan di atas, dibalut karakter puitis tokoh terpilih.
-              </p>
-            </div>
 
             {/* Duet Toggle Button Section */}
             <div className="pt-2 border-t border-white/5 space-y-2">
